@@ -4,6 +4,14 @@ title: CSS Questions
 
 ## Table of Contents
 
+- [How many ways can you embed css code into an html file?](#how-many-ways-can-you-embed-css-code-into-an-html-file)
+- [What is CSS specificity? Please explain it in the desc order](#what-is-CSS-specificity-Please-explain-it-in-the-desc-order)
+- [What is pseudo element and pseudo class?](#what-is-pseudo-element-and-pseudo-class)
+- [What is margin collapse?](#what-is-margin-collapse)
+- [What are CSS box-sizing attributes?](#what-are-CSS-box-sizing-attributes)
+- [CSS to hide HTML elements and their differences?](#CSS-to-hide-HTML-elements-and-their-differences)
+- [What are CSS image sprites?](#what-are-CSS-image-sprites)
+- [What is px, em and rem?](#what-is-px-em-and-rem)
 - [What is CSS selector specificity and how does it work?](#what-is-css-selector-specificity-and-how-does-it-work)
 - [What's the difference between "resetting" and "normalizing" CSS? Which would you choose, and why?](#whats-the-difference-between-resetting-and-normalizing-css-which-would-you-choose-and-why)
 - [Describe `float`s and how they work.](#describe-floats-and-how-they-work)
@@ -39,6 +47,58 @@ title: CSS Questions
 - [Can you explain the difference between px em and rem as they relate to font sizing?](#can-you-explain-the-difference-between-px-em-and-rem-as-they-relate-to-font-sizing) 
 - [Can you give an example of a pseudo class? Can you provide an example use case for a pseudo class?](#can-you-give-an-example-of-a-pseudo-class-can-you-provide-an-example-use-case-for-a-pseudo-class) 
 - [What is the difference between a block level element and an inline element. Can you provide examples of each type of element?](#what-is-the-difference-between-a-block-level-element-and-an-inline-element-can-you-provide-examples-of-each-type-of-element) 
+
+### How many ways can you embed css code into an html file?
+
+In the <header> element of the HTML file, you can include <link rel="stylesheet" href="style.css"> which you start a new file called style.css and type the CSS code there, or you can do inline style like putting CSS code inside of the <style> … </style>, or you can put code in side the tag like <img src= “hello.jpeg” width= “100px” />
+  
+[[↑] Back to top](#table-of-contents)
+
+### What is CSS specificity? Please explain it in the desc order.
+CSS is for styling the page, making the page prettier, and you can put some animation to the CSS to make the page more interesting. 
+
+[[↑] Back to top](#table-of-contents)
+
+### What is pseudo element and pseudo class?
+Like button:hover is pseudo class
+
+[[↑] Back to top](#table-of-contents)
+
+### Write code snippets to make the element center horizontally, vertically and both?
+Using flexbox, assuming it is in a div. 
+```css
+div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### What is margin collapse?
+When declare a margin on the top of the CSS code and then declare again in the following code
+
+[[↑] Back to top](#table-of-contents)
+
+### What are CSS box-sizing attributes?
+Box-sizing calculates the size of the box differently and usually prettier because you can set it the way as you wish with the relevant sizes. 
+
+[[↑] Back to top](#table-of-contents)
+
+### CSS to hide HTML elements and their differences?
+display: invisible 
+
+[[↑] Back to top](#table-of-contents)
+
+### What are CSS image sprites?
+
+[[↑] Back to top](#table-of-contents)
+
+### What is px, em and rem?
+
+
+[[↑] Back to top](#table-of-contents)
 
 ### What is CSS selector specificity and how does it work?
 
