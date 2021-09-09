@@ -2,8 +2,6 @@
 title: CSS Questions
 ---
 
-Answers to [Front-end Job Interview Questions - CSS Questions](https://github.com/h5bp/Front-end-Developer-Interview-Questions/blob/master/src/questions/css-questions.md). Pull requests for suggestions and corrections are welcome!
-
 ## Table of Contents
 
 - [What is CSS selector specificity and how does it work?](#what-is-css-selector-specificity-and-how-does-it-work)
@@ -37,6 +35,10 @@ Answers to [Front-end Job Interview Questions - CSS Questions](https://github.co
 - [How is responsive design different from adaptive design?](#how-is-responsive-design-different-from-adaptive-design)
 - [Have you ever worked with retina graphics? If so, when and what techniques did you use?](#have-you-ever-worked-with-retina-graphics-if-so-when-and-what-techniques-did-you-use)
 - [Is there any reason you'd want to use `translate()` instead of `absolute` positioning, or vice-versa? And why?](#is-there-any-reason-youd-want-to-use-translate-instead-of-absolute-positioning-or-vice-versa-and-why)
+- [How is clearfix css property useful?](#how-is-clearfix-css-property-useful) 
+- [Can you explain the difference between px em and rem as they relate to font sizing?](#can-you-explain-the-difference-between-px-em-and-rem-as-they-relate-to-font-sizing) 
+- [Can you give an example of a pseudo class? Can you provide an example use case for a pseudo class?](#can-you-give-an-example-of-a-pseudo-class-can-you-provide-an-example-use-case-for-a-pseudo-class) 
+- [What is the difference between a block level element and an inline element. Can you provide examples of each type of element?](#what-is-the-difference-between-a-block-level-element-and-an-inline-element-can-you-provide-examples-of-each-type-of-element) 
 
 ### What is CSS selector specificity and how does it work?
 
@@ -581,6 +583,23 @@ When using `translate()`, the element still occupies its original space (sort of
 - https://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
 
 [[↑] Back to top](#table-of-contents)
+
+### How is clearfix css property useful?
+
+[[↑] Back to top](#table-of-contents)
+
+### Can you explain the difference between px, em and rem as they relate to font sizing?
+
+[[↑] Back to top](#table-of-contents)
+
+### Can you give an example of a pseudo class? Can you provide an example use case for a pseudo class?
+
+[[↑] Back to top](#table-of-contents)
+
+### What is the difference between a block level element and an inline element. Can you provide examples of each type of element?
+
+[[↑] Back to top](#table-of-contents)
+
 
 ### Other Answers
 
