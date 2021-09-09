@@ -1,14 +1,5 @@
 ---
-title: Performance Questions
----
----
-title: Testing Questions
----
----
-title: Network Questions
----
----
-title: Behavior Questions
+title: Performance | Testing | Network | Behavior Questions
 ---
 
 ## Table of Contents
