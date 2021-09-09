@@ -1,5 +1,5 @@
 ---
-title: React Questions
+title: Redux Questions
 ---
 
 ## Table of Contents
