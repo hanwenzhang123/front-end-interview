@@ -15,7 +15,7 @@ title: HTML Questions
 - [What is progressive rendering?](#what-is-progressive-rendering)
 - [Why you would use a `srcset` attribute in an image tag? Explain the process the browser uses when evaluating the content of this attribute.](#why-you-would-use-a-srcset-attribute-in-an-image-tag-explain-the-process-the-browser-uses-when-evaluating-the-content-of-this-attribute)
 - [Have you used different HTML templating languages before?](#have-you-used-different-html-templating-languages-before)
-- [What is the meta tag in the head tag? Why do we need it?](#what-is-the-meta-tag-in-the-head-tag? Why-do-we-need-it)
+- [What is the meta tag in the head tag? Why do we need it?](#what-is-the-meta-tag-in-the-head-tag-Why-do-we-need-it)
 - [List some semantic tags in HTML5](#list-some-semantic-tags-in-HTML5)
 - [Link element in separate tab](#link-element-in-separate-tab)
 - [What is the difference between block element and inline element?](#what-is-the-difference-between-block-element-and-inline-element)
