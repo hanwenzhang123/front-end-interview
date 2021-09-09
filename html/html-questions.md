@@ -42,7 +42,7 @@ The DOCTYPE declaration for the HTML5 standards is `<!DOCTYPE html>`.
 
 The most common case, serve a page with content available in multiple languages, but the content within the page should be displayed only in one consistent language.
 
-The returned HTML document should also declare the lang attribute in the <html> tag, such as <html lang="en">...</html>. The server can then use this information to return a version of the document in the appropriate language if such an alternative is available. 
+The returned HTML document should also declare the lang attribute in the `<html>` tag, such as `<html lang="en">...</html>`. The server can then use this information to return a version of the document in the appropriate language if such an alternative is available. 
   
 Make use of the `hreflang` attribute in the `<head>`. Eg. `<link rel="alternate" hreflang="de" href="http://de.example.com/page.html" />`
 
@@ -145,15 +145,9 @@ Examples of such techniques:
 
 ### Why you would use a `srcset` attribute in an image tag? Explain the process the browser uses when evaluating the content of this attribute.
 
-You would use the `srcset` attribute when you want to serve different images to users depending on their device display width - serve higher quality images to devices with retina display enhances the user experience while serving lower resolution images to low-end devices increase performance and decrease data wastage (because serving a larger image will not have any visible difference). For example: `<img srcset="small.jpg 500w, medium.jpg 1000w, large.jpg 2000w" src="..." alt="">` tells the browser to display the small, medium or large `.jpg` graphic depending on the client's resolution. The first value is the image name and the second is the width of the image in pixels. For a device width of 320px, the following calculations are made:
-
-- 500 / 320 = 1.5625
-- 1000 / 320 = 3.125
-- 2000 / 320 = 6.25
-
-If the client's resolution is 1x, 1.5625 is the closest, and `500w` corresponding to `small.jpg` will be selected by the browser.
-
-If the resolution is retina (2x), the browser will use the closest resolution above the minimum. Meaning it will not choose the 500w (1.5625) because it is greater than 1 and the image might look bad. The browser would then choose the image with a resulting ratio closer to 2 which is 1000w (3.125).
+You would use the `srcset` attribute when you want to serve different images to users depending on their device display width - serve higher quality images to devices with retina display enhances the user experience while serving lower resolution images to low-end devices increase performance and decrease data wastage.
+	
+For example: `<img srcset="small.jpg 500w, medium.jpg 1000w, large.jpg 2000w" src="..." alt="">` tells the browser to display the small, medium or large `.jpg` graphic depending on the client's resolution. The first value is the image name and the second is the width of the image in pixels. 
 
 `srcset`s solve the problem whereby you want to serve smaller image files to narrow screen devices, as they don't need huge images like desktop displays do — and also optionally that you want to serve different resolution images to high density/low-density screens.
 
@@ -166,20 +160,57 @@ Yes, EJS and Pug (formerly Jade), also heard about Handlebars. In my opinion, th
 [[↑] Back to top](#table-of-contents)
 
 ### What is the meta tag in the head tag? Why do we need it?
-<meta> tag is for the inside information for the HTML file only, like description of what the code is for, which is important for SEO (search optimization). we do not visually see any of the code in the browser, whatever in the meta tag will not appear anywhere other than the source code, but the browser will analyze the information. 
+
+The `<meta>` tag defines metadata about an HTML document. Metadata is data (information) about data. `<meta>` tags always go inside the `<head>` element, and are typically used to specify character set, page description, keywords, author of the document, and viewport settings.
+	
+`<meta>` is important for SEO (search engine optimization). we do not visually see any of the code in the browser, whatever in the meta tag will not appear anywhere other than the source code, but the browser will analyze the information. 
+	
+[[↑] Back to top](#table-of-contents)
   
 ### List some semantic tags in HTML5
-<section></section>; <article></article>; <footer></footer>; <nav></nav> and more
+
+A semantic element clearly describes its meaning to both the browser and the developer. semantic elements help structure the code we create, making it more readable and easier to maintain.
+
+Semantic HTML elements are those that clearly describe their meaning in a human- and machine-readable way. It is the key starting point toward good accessibility practices. When a screen reader, or any sort of assistive device scans a web page, it gets information about the Document Object Model (DOM), or the HTML structure of the page.
+
+`<main> </main>`; `<section></section>`; `<article></article>`; `<header></<header>`; `<footer></footer>`; `<nav></nav>`;
   
+[[↑] Back to top](#table-of-contents)
+	
 ### Link element in separate tab
 #### Write a code snippet to achieve the requirements set up a link for user, user can click the link and redirect user to the Youtube in the separate tab
-<a href=“https://www.youtube.com/” target="_blank"></a>
+`<a href=“https://www.youtube.com/” target="_blank"></a>`
+
+The target attribute specifies where to open the linked document.
+`<a target="_blank(new tab)|_self(same frame - default)|_parent(parent frame)|_top(full body of Window)|framename(named iframe)">`
+	
+[[↑] Back to top](#table-of-contents)
 
 ### What is the difference between block element and inline element?
-Block element takes the whole block that starts a new line while inline element takes the space as needed but does not start a new line; <div> is a block element while <span> is a inline element
+
+Inline elements do not force a new line to begin in the document flow. Block elements typically cause a line break to occur.
+
+Block element takes the whole block that starts a new line while inline element takes the space as needed but does not force to start a new line; `<div>` is a block element example while `<span>` is a inline element example.
+	
+[[↑] Back to top](#table-of-contents)
 
 ### List some form elements
-<form action= “/”>
-		<label for= “name”>Name: </label>
-		<input type= “text” name=”name”>
-	</form>
+`<form method="get|post">`
+The form-data can be sent as URL variables (with method="get") (non-secure data, like query strings in Google) or as HTTP post transaction (with method="post").
+
+```html
+<form action="/action_page.php" method="get" id="form1">
+<label for="fname">First name:</label>
+<input type="text" id="fname" name="fname"><br><br>
+<label for="lname">Last name:</label>
+<input type="text" id="lname" name="lname">
+<select id="cars" name="cars">
+  <option value="volvo" selected>BMW</option>
+  <option value="audi">Audi</option>
+</select>
+</form>
+
+<button type="submit" form="form1" value="Submit">Submit</button>
+```
+
+[[↑] Back to top](#table-of-contents)
