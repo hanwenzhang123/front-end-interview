@@ -9,6 +9,7 @@ title: CSS Questions
 - [CSS The !important Rule](#CSS-The-!important-Rule) 
 - [What is pseudo element and pseudo class?](#what-is-pseudo-element-and-pseudo-class)
 - [What is margin collapse?](#what-is-margin-collapse)
+- [The CSS Box Model](#The-CSS-Box-Model)
 - [What are CSS box-sizing attributes?](#what-are-CSS-box-sizing-attributes)
 - [CSS to hide HTML elements and their differences?](#CSS-to-hide-HTML-elements-and-their-differences)
 - [What are CSS image sprites?](#what-are-CSS-image-sprites)
@@ -18,12 +19,9 @@ title: CSS Questions
 - [Describe z-index and how stacking context is formed.](#describe-z-index-and-how-stacking-context-is-formed)
 - [Describe BFC (Block Formatting Context) and how it works.](#describe-block-formatting-context-bfc-and-how-it-works)
 - [What are the various clearing techniques and which is appropriate for what context?](#what-are-the-various-clearing-techniques-and-which-is-appropriate-for-what-context)
-- [Explain CSS sprites, and how you would implement them on a page or site.](#explain-css-sprites-and-how-you-would-implement-them-on-a-page-or-site)
 - [How would you approach fixing browser-specific styling issues?](#how-would-you-approach-fixing-browser-specific-styling-issues)
 - [How do you serve your pages for feature-constrained browsers? What techniques/processes do you use?](#how-do-you-serve-your-pages-for-feature-constrained-browsers-what-techniquesprocesses-do-you-use)
-- [What are the different ways to visually hide content (and make it available only for screen readers)?](#what-are-the-different-ways-to-visually-hide-content-and-make-it-available-only-for-screen-readers)
 - [Have you ever used a grid system, and if so, what do you prefer?](#have-you-ever-used-a-grid-system-and-if-so-what-do-you-prefer)
-- [Have you used or implemented media queries or mobile specific layouts/CSS?](#have-you-used-or-implemented-media-queries-or-mobile-specific-layoutscss)
 - [Are you familiar with styling SVG?](#are-you-familiar-with-styling-svg)
 - [Can you give an example of an @media property other than screen?](#can-you-give-an-example-of-an-media-property-other-than-screen)
 - [What are some of the "gotchas" for writing efficient CSS?](#what-are-some-of-the-gotchas-for-writing-efficient-css)
@@ -31,9 +29,6 @@ title: CSS Questions
 - [Describe what you like and dislike about the CSS preprocessors you have used.](#describe-what-you-like-and-dislike-about-the-css-preprocessors-you-have-used)
 - [How would you implement a web design comp that uses non-standard fonts?](#how-would-you-implement-a-web-design-comp-that-uses-non-standard-fonts)
 - [Explain how a browser determines what elements match a CSS selector.](#explain-how-a-browser-determines-what-elements-match-a-css-selector)
-- [Describe pseudo-elements and discuss what they are used for.](#describe-pseudo-elements-and-discuss-what-they-are-used-for)
-- [Explain your understanding of the box model and how you would tell the browser in CSS to render your layout in different box models.](#explain-your-understanding-of-the-box-model-and-how-you-would-tell-the-browser-in-css-to-render-your-layout-in-different-box-models)
-- [What does `* { box-sizing: border-box; }` do? What are its advantages?](#what-does---box-sizing-border-box--do-what-are-its-advantages)
 - [What is the CSS `display` property and can you give a few examples of its use?](#what-is-the-css-display-property-and-can-you-give-a-few-examples-of-its-use)
 - [What's the difference between `inline` and `inline-block`?](#whats-the-difference-between-inline-and-inline-block)
 - [What's the difference between a `relative`, `fixed`, `absolute` and `static`ally positioned element?](#whats-the-difference-between-a-relative-fixed-absolute-and-statically-positioned-element)
@@ -43,7 +38,6 @@ title: CSS Questions
 - [How is responsive design different from adaptive design?](#how-is-responsive-design-different-from-adaptive-design)
 - [Have you ever worked with retina graphics? If so, when and what techniques did you use?](#have-you-ever-worked-with-retina-graphics-if-so-when-and-what-techniques-did-you-use)
 - [Is there any reason you'd want to use `translate()` instead of `absolute` positioning, or vice-versa? And why?](#is-there-any-reason-youd-want-to-use-translate-instead-of-absolute-positioning-or-vice-versa-and-why)
-- [How is clearfix css property useful?](#how-is-clearfix-css-property-useful) 
 
 ### How many ways can you embed css code into an html file?
 
@@ -89,6 +83,7 @@ p {
 [[↑] Back to top](#table-of-contents)
 
 ### What is pseudo element and pseudo class?
+
 - pseudo class(:) - Like button:hover and a:visited/:focus, specifies a special state of the selected element(s)
 - pseudo element(::) - like p::after and button::before, style a specific part of the selected element(s)
 
@@ -107,27 +102,82 @@ div {
 [[↑] Back to top](#table-of-contents)
 
 ### What is margin collapse?
-When declare a margin on the top of the CSS code and then declare again in the following code
 
-	- Sometimes two margins collapse into a single margin.
-	- take the greater value, only top and bottom margins!
-	- top bottom margin of an element collapses when it comes in contact with one another
+Top and bottom margins of elements are sometimes collapsed into a single margin that is equal to the largest of the two margins (the greater value)
+This does not happen on left and right margins! Only top and bottom margins!
 
 [[↑] Back to top](#table-of-contents)
 
+### The CSS Box Model
+
+the term "box model" is used when talking about the rectangular boxes design and layout
+
+- margin, border, padding, content
+- goes from outside to the inside
+
+Margin - Clears an area outside the border. The margin is transparent
+Border - A border that goes around the padding and content
+Padding - Clears an area around the content. The padding is transparent
+Content - The content of the box, where text and images appear
+	
+[[↑] Back to top](#table-of-contents)
+
 ### What are CSS box-sizing attributes?
-Box-sizing calculates the size of the box differently and usually prettier because you can set it the way as you wish with the relevant sizes. 
+
+Box-sizing sets how the total width and height of an element is calculated.
+`box-sizing: content-box`; - default value: The width and height properties include the content, but does not include the padding, border, or margin.
+`box-sizing: border-box`; - The width and height properties include the content, padding, and border, but do not include the margin. 
 
 [[↑] Back to top](#table-of-contents)
 
 ### CSS to hide HTML elements and their differences?
-- visibility:hidden: hide it, cover it, still there in the DOM tree, just you can not see it
-- display:none: the element will be gone from the DOM tree, disappear from UI
-- opacity 0: occupy the space and consumes clicks
+
+- `visibility:hidden`: hide it, cover it, still there in the DOM tree, just you can not see it
+- `display:none`: the element will be gone from the DOM tree, disappear from UI
+- `opacity 0`: occupy the space and consumes clicks
+- `width: 0; height: 0`: Make the element not take up any space on the screen at all, resulting in not showing it.
+
+hide content (and make it available only for screen readers), These techniques are related to accessibility (a11y).
+
+These techniques are related to accessibility (a11y). These techniques are related to accessibility (a11y).
+`position: absolute; left: -99999px`. Position it outside of the screen.
+`text-indent: -9999px`. This only works on text within the block elements.
 
 [[↑] Back to top](#table-of-contents)
 
 ### What are CSS image sprites?
+
+An image sprite is a combined collection of multiple images put into a single image.
+
+How you would implement them on a page or site?
+1. Use a sprite generator that packs multiple images into one and generate the appropriate CSS for it.
+1. Each image would have a corresponding CSS class with `background-image`, `background-position` and `background-size` properties defined.
+1. To use that image, add the corresponding class to your element.
+
+A web page with many images can take a long time to load and generates multiple server requests.
+Using image sprites will reduce the number of server requests and save bandwidth.
+
+Image sprites are generally used for designing a graphic social media bar or a navigation bar to make it more attractive and efficient at the same time, it is a commonly-used technique for icons (Gmail uses it)
+
+```css
+#home {
+  left: 0px;
+  width: 46px;
+  background: url('img_navsprites.gif') 0 0;		//background image (left 0px, top 0px)
+}
+
+#prev {
+  left: 63px;
+  width: 43px;
+  background: url('img_navsprites.gif') -47px 0;	//47px to the right
+}
+
+#next {
+  left: 129px;
+  width: 43px;
+  background: url('img_navsprites.gif') -91px 0;	//91px to the right
+}
+```
 
 [[↑] Back to top](#table-of-contents)
 
@@ -152,13 +202,15 @@ I would choose resetting when I have a very customized or unconventional site de
 
 ### Describe `float`s and how they work.
 
-Float is a CSS positioning property. Floated elements remain a part of the flow of the page, and will affect the positioning of other elements (e.g. text will flow around floated elements), unlike `position: absolute` elements, which are removed from the flow of the page.
+The CSS `float` Floated elements (left|right|none|inherit) remain a part of the flow of the page, and will affect the positioning of other elements, unlike `position: absolute` elements, which are removed from the flow of the page.
 
-The CSS `clear` property can be used to be positioned below `left`/`right`/`both` floated elements.
+The CSS `clear` property specifies what should happen with the element that is next to a floating element, can be used to be positioned below `left`/`right`/`both`/'none'/'inherit' floated elements.
+
+`overflow: auto` - Specifies what happens if content overflows an element's box
 
 If a parent element contains nothing but floated elements, its height will be collapsed to nothing. It can be fixed by clearing the float after the floated elements in the container but before the close of the container.
 
-The `.clearfix` hack uses a clever CSS [pseudo selector](#describe-pseudo-elements-and-discuss-what-they-are-used-for) (`:after`) to clear floats. Rather than setting the overflow on the parent, you apply an additional class `clearfix` to it. Then apply this CSS:
+The .clearfix hack uses a clever CSS pseudo selector (:after) to clear floats. Rather than setting the overflow on the parent, you apply an additional class clearfix to it. Then apply this CSS:
 
 ```css
 .clearfix:after {
@@ -172,20 +224,18 @@ The `.clearfix` hack uses a clever CSS [pseudo selector](#describe-pseudo-elemen
 
 Alternatively, give `overflow: auto` or `overflow: hidden` property to the parent element which will establish a new block formatting context inside the children and it will expand to contain its children.
 
+
 [[↑] Back to top](#table-of-contents)
 
 ### Describe `z-index` and how stacking context is formed.
 
-The `z-index` property in CSS controls the vertical stacking order of elements that overlap. `z-index` only affects elements that have a `position` value which is not `static`.
+The z-index property specifies the stack order of an element. 
+
+z-index only works on positioned elements (position: absolute, position: relative, position: fixed, or position: sticky) and flex items (elements that are direct children of display:flex elements).
+
+If two positioned elements overlap without a z-index specified, the element positioned last in the HTML code will be shown on top. 
 
 Without any `z-index` value, elements stack in the order that they appear in the DOM (the lowest one down at the same hierarchy level appears on top). Elements with non-static positioning (and their children) will always appear on top of elements with default static positioning, regardless of HTML hierarchy.
-
-A stacking context is an element that contains a set of layers. Within a local stacking context, the `z-index` values of its children are set relative to that element rather than to the document root. Layers outside of that context — i.e. sibling elements of a local stacking context — can't sit between layers within it. If an element B sits on top of element A, a child element of element A, element C, can never be higher than element B even if element C has a higher `z-index` than element B.
-
-Each stacking context is self-contained - after the element's contents are stacked, the whole element is considered in the stacking order of the parent stacking context. A handful of CSS properties trigger a new stacking context, such as `opacity` less than 1, `filter` that is not `none`, and `transform` that is not`none`.
-
-_Note: What exactly qualifies an element to create a stacking context is listed in this long set of [rules](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context#The_stacking_context)._
-
 
 [[↑] Back to top](#table-of-contents)
 
@@ -218,20 +268,6 @@ In large projects, I would write a utility `.clearfix` class and use them in pla
 
 [[↑] Back to top](#table-of-contents)
 
-### Explain CSS sprites, and how you would implement them on a page or site.
-
-CSS sprites combine multiple images into one single larger image. It is a commonly-used technique for icons (Gmail uses it). How to implement it:
-
-1. Use a sprite generator that packs multiple images into one and generate the appropriate CSS for it.
-1. Each image would have a corresponding CSS class with `background-image`, `background-position` and `background-size` properties defined.
-1. To use that image, add the corresponding class to your element.
-
-**Advantages:**
-
-- Reduce the number of HTTP requests for multiple images (only one single request is required per spritesheet). But with HTTP2, loading multiple images is no longer much of an issue.
-- Advance downloading of assets that won't be downloaded until needed, such as images that only appear upon `:hover` pseudo-states. Blinking wouldn't be seen.
-
-[[↑] Back to top](#table-of-contents)
 
 ### How would you approach fixing browser-specific styling issues?
 
@@ -254,32 +290,11 @@ CSS sprites combine multiple images into one single larger image. It is a common
 
 [[↑] Back to top](#table-of-contents)
 
-### What are the different ways to visually hide content (and make it available only for screen readers)?
-
-These techniques are related to accessibility (a11y).
-
-- `width: 0; height: 0`. Make the element not take up any space on the screen at all, resulting in not showing it.
-- `position: absolute; left: -99999px`. Position it outside of the screen.
-- `text-indent: -9999px`. This only works on text within the `block` elements.
-- Meta tags. For example by using Schema.org, RDF, and JSON-LD.
-- WAI-ARIA. A W3C technical specification that specifies how to increase the accessibility of web pages.
-
-Even if WAI-ARIA is the ideal solution, I would go with the `absolute` positioning approach, as it has the least caveats, works for most elements and it's an easy technique.
-
-
-[[↑] Back to top](#table-of-contents)
-
 ### Have you ever used a grid system, and if so, what do you prefer?
 
 Before Flex became popular (around 2014), the `float`-based grid system was the most reliable because it still has the most browser support among the alternative existing systems (flex, grid). Bootstrap was using the `float` approach until Bootstrap 4 which switched to the `flex`-based approach. As of writing (2020), `flex` is the recommended approach for building grid systems and has [decent browser support](https://caniuse.com/#search=flex).
 
 For the adventurous, they can look into [CSS Grid Layout](https://css-tricks.com/snippets/css/complete-guide-grid/), which uses the shiny new `grid` property; it is even better than `flex` for building grid layouts and will be the de facto way to do so in the future.
-
-[[↑] Back to top](#table-of-contents)
-
-### Have you used or implemented media queries or mobile-specific layouts/CSS?
-
-Yes. An example would be transforming a stacked pill navigation into a fixed-bottom tab navigation beyond a certain breakpoint.
 
 [[↑] Back to top](#table-of-contents)
 
@@ -309,14 +324,12 @@ The above `fill="purple"` is an example of a _presentational attribute_. Interes
 
 ### Can you give an example of an @media property other than screen?
 
-Yes, there are four types of @media properties (including _screen_):
+media queries - for responsive design - change the styling once the size reaches a certain value
 
 - `all` - for all media type devices
 - `print` - for printers
 - `speech` - for screenreaders that "reads" the page out loud
 - `screen` - for computer screens, tablets, smart-phones etc.
-
-Here is an example of `print` media type's usage:
 
 ```css
 @media print {
@@ -386,48 +399,6 @@ For example with this selector `p span`, browsers firstly find all the `<span>` 
 
 [[↑] Back to top](#table-of-contents)
 
-### Describe pseudo-elements and discuss what they are used for.
-
-A CSS pseudo-element is a keyword added to a selector that lets you style a specific part of the selected element(s). They can be used for decoration (`:first-line`, `:first-letter`) or adding elements to the markup (combined with `content: ...`) without having to modify the markup (`:before`, `:after`).
-
-- `:first-line` and `:first-letter` can be used to decorate text.
-- Used in the `.clearfix` hack as shown above to add a zero-space element with `clear: both`.
-- Triangular arrows in tooltips use `:before` and `:after`. Encourages separation of concerns because the triangle is considered part of styling and not really the DOM.
-
-[[↑] Back to top](#table-of-contents)
-
-### Explain your understanding of the box model and how you would tell the browser in CSS to render your layout in different box models.
-
-The CSS box model describes the rectangular boxes that are generated for elements in the document tree and laid out according to the visual formatting model. Each box has a content area (e.g. text, an image, etc.) and optional surrounding `padding`, `border`, and `margin` areas.
-
-The CSS box model is responsible for calculating:
-
-- How much space a block element takes up.
-- Whether or not borders and/or margins overlap, or collapse.
-- A box's dimensions.
-
-The box model has the following rules:
-
-- The dimensions of a block element are calculated by `width`, `height`, `padding`, `border`s, and `margin`s.
-- If no `height` is specified, a block element will be as high as the content it contains, plus `padding` (unless there are floats, for which see below).
-- If no `width` is specified, a non-floated block element will expand to fit the width of its parent minus `padding`.
-- The `height` of an element is calculated by the content's `height`.
-- The `width` of an element is calculated by the content's `width`.
-- By default, `padding`s and `border`s are not part of the `width` and `height` of an element.
-
-
-[[↑] Back to top](#table-of-contents)
-
-### What does `* { box-sizing: border-box; }` do? What are its advantages?
-
-- By default, elements have `box-sizing: content-box` applied, and only the content size is being accounted for.
-- `box-sizing: border-box` changes how the `width` and `height` of elements are being calculated, `border` and `padding` are also being included in the calculation.
-- The `height` of an element is now calculated by the content's `height` + vertical `padding` + vertical `border` width.
-- The `width` of an element is now calculated by the content's `width` + horizontal `padding` + horizontal `border` width.
-- Taking into account `padding`s and `border`s as part of our box model resonates better with how designers actually imagine content in grids.
-
-
-[[↑] Back to top](#table-of-contents)
 
 ### What is the CSS `display` property and can you give a few examples of its use?
 
@@ -447,8 +418,6 @@ The box model has the following rules:
 [[↑] Back to top](#table-of-contents)
 
 ### What's the difference between `inline` and `inline-block`?
-
-I shall throw in a comparison with `block` for good measure.
 
 |  | `block` | `inline-block` | `inline` |
 | --- | --- | --- | --- |
@@ -493,8 +462,6 @@ Grid is by far the most intuitive approach for creating grid-based layouts (it b
 [[↑] Back to top](#table-of-contents)
 
 ### Can you explain the difference between coding a website to be responsive versus using a mobile-first strategy?
-
-Note that these two 2 approaches are not exclusive.
 
 Making a website responsive means the some elements will respond by adapting its size or other functionality according to the device's screen size, typically the viewport width, through CSS media queries, for example, making the font size smaller on smaller devices.
 
@@ -587,10 +554,6 @@ For icons, I would also opt to use SVGs and icon fonts where possible, as they r
 `translate()` is a value of CSS `transform`. Changing `transform` or `opacity` does not trigger browser reflow or repaint but does trigger compositions; whereas changing the absolute positioning triggers `reflow`. `transform` causes the browser to create a GPU layer for the element but changing absolute positioning properties uses the CPU. Hence `translate()` is more efficient and will result in shorter paint times for smoother animations.
 
 When using `translate()`, the element still occupies its original space (sort of like `position: relative`), unlike in changing the absolute positioning.
-
-[[↑] Back to top](#table-of-contents)
-
-### How is clearfix css property useful?
 
 [[↑] Back to top](#table-of-contents)
 
