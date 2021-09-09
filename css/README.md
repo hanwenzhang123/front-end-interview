@@ -5,14 +5,14 @@ title: CSS Questions
 ## Table of Contents
 
 - [How many ways can you embed css code into an html file?](#how-many-ways-can-you-embed-css-code-into-an-html-file)
-- [What is CSS specificity? Please explain it in the desc order](#what-is-CSS-specificity-Please-explain-it-in-the-desc-order)
+- [What is CSS selector specificity and how does it work?](#what-is-css-selector-specificity-and-how-does-it-work)
+- [CSS The !important Rule](#CSS-The-!important-Rule) 
 - [What is pseudo element and pseudo class?](#what-is-pseudo-element-and-pseudo-class)
 - [What is margin collapse?](#what-is-margin-collapse)
 - [What are CSS box-sizing attributes?](#what-are-CSS-box-sizing-attributes)
 - [CSS to hide HTML elements and their differences?](#CSS-to-hide-HTML-elements-and-their-differences)
 - [What are CSS image sprites?](#what-are-CSS-image-sprites)
 - [What is px, em and rem?](#what-is-px-em-and-rem)
-- [What is CSS selector specificity and how does it work?](#what-is-css-selector-specificity-and-how-does-it-work)
 - [What's the difference between "resetting" and "normalizing" CSS? Which would you choose, and why?](#whats-the-difference-between-resetting-and-normalizing-css-which-would-you-choose-and-why)
 - [Describe `float`s and how they work.](#describe-floats-and-how-they-work)
 - [Describe z-index and how stacking context is formed.](#describe-z-index-and-how-stacking-context-is-formed)
@@ -44,9 +44,6 @@ title: CSS Questions
 - [Have you ever worked with retina graphics? If so, when and what techniques did you use?](#have-you-ever-worked-with-retina-graphics-if-so-when-and-what-techniques-did-you-use)
 - [Is there any reason you'd want to use `translate()` instead of `absolute` positioning, or vice-versa? And why?](#is-there-any-reason-youd-want-to-use-translate-instead-of-absolute-positioning-or-vice-versa-and-why)
 - [How is clearfix css property useful?](#how-is-clearfix-css-property-useful) 
-- [Can you explain the difference between px em and rem as they relate to font sizing?](#can-you-explain-the-difference-between-px-em-and-rem-as-they-relate-to-font-sizing) 
-- [Can you give an example of a pseudo class? Can you provide an example use case for a pseudo class?](#can-you-give-an-example-of-a-pseudo-class-can-you-provide-an-example-use-case-for-a-pseudo-class) 
-- [What is the difference between a block level element and an inline element. Can you provide examples of each type of element?](#what-is-the-difference-between-a-block-level-element-and-an-inline-element-can-you-provide-examples-of-each-type-of-element) 
 
 ### How many ways can you embed css code into an html file?
 
@@ -59,8 +56,35 @@ In the `<header>` element of the HTML file, you can include `<link rel="styleshe
   
 [[↑] Back to top](#table-of-contents)
 
-### What is CSS specificity? Please explain it in the desc order.
-CSS is for styling the page, making the page prettier, and you can put some animation to the CSS to make the page more interesting. 
+### What is CSS selector specificity and how does it work?
+
+If there are two or more conflicting CSS rules that point to the same element, Specificity Hierarchy applies.
+
+CSS specificity in DESC order
+- Inline styles - An inline style is attached directly to the element to be styled. Example: `<h1 style="color: #ffffff;">`.
+- IDs - An ID is a unique identifier for the page elements, such as #navbar.
+- Classes, attributes and pseudo-classes - This category includes .classes, aattributes and pseudo-classes such as :hover, :focus etc.
+- Elements and pseudo-elements - This category includes element names and pseudo-elements, such as h1, div, ::before and ::after.
+
+In the cases of equal specificity: the latest rule is the one that counts. 
+
+The universal selector `(*)` has low specificity, while ID selectors are highly specific! 
+
+I would write CSS rules with low specificity so that they can be easily overridden if necessary. When writing CSS UI component library code, it is important that they have low specificities so that users of the library can override them without using too complicated CSS rules just for the sake of increasing specificity or resorting to `!important`.
+
+[[↑] Back to top](#table-of-contents)
+
+### CSS The !important Rule
+
+The !important rule in CSS is used to add more importance to a property/value than normal.
+
+In fact, if you use the !important rule, it will override ALL previous styling rules for that specific property on that element!
+
+```css
+p {
+  background-color: red !important;
+}
+```
 
 [[↑] Back to top](#table-of-contents)
 
@@ -116,27 +140,6 @@ specify sizes or lengths of elements using various units of measure
 
 [[↑] Back to top](#table-of-contents)
 
-### What is CSS selector specificity and how does it work?
-
-The browser determines what styles to show on an element depending on the specificity of CSS rules. We assume that the browser has already determined the rules that match a particular element. Among the matching rules, the specificity, four comma-separate values, `a, b, c, d` are calculated for each rule based on the following:
-
-1. `a` is whether inline styles are being used. If the property declaration is an inline style on the element, `a` is 1, else 0.
-2. `b` is the number of ID selectors.
-3. `c` is the number of classes, attributes and pseudo-classes selectors.
-4. `d` is the number of tags and pseudo-elements selectors.
-
-The resulting specificity is not a score, but a matrix of values that can be compared column by column. When comparing selectors to determine which has the highest specificity, look from left to right, and compare the highest value in each column. So a value in column `b` will override values in columns `c` and `d`, no matter what they might be. As such, specificity of `0,1,0,0` would be greater than one of `0,0,10,10`.
-
-In the cases of equal specificity: the latest rule is the one that counts. If you have written the same rule into your stylesheet (regardless of internal or external) twice, then the lower rule in your style sheet is closer to the element to be styled, it is deemed to be more specific and therefore will be applied.
-
-I would write CSS rules with low specificity so that they can be easily overridden if necessary. When writing CSS UI component library code, it is important that they have low specificities so that users of the library can override them without using too complicated CSS rules just for the sake of increasing specificity or resorting to `!important`.
-
-###### References
-
-- https://www.smashingmagazine.com/2007/07/css-specificity-things-you-should-know/
-- https://www.sitepoint.com/web-foundations/specificity/
-
-[[↑] Back to top](#table-of-contents)
 
 ### What's the difference between "resetting" and "normalizing" CSS? Which would you choose, and why?
 
@@ -144,10 +147,6 @@ I would write CSS rules with low specificity so that they can be easily overridd
 - **Normalizing** - Normalizing preserves useful default styles rather than "unstyling" everything. It also corrects bugs for common browser dependencies.
 
 I would choose resetting when I have a very customized or unconventional site design such that I need to do a lot of my own styling and do not need any default styling to be preserved.
-
-###### References
-
-- https://stackoverflow.com/questions/6887336/what-is-the-difference-between-normalize-css-and-reset-css
 
 [[↑] Back to top](#table-of-contents)
 
@@ -173,10 +172,6 @@ The `.clearfix` hack uses a clever CSS [pseudo selector](#describe-pseudo-elemen
 
 Alternatively, give `overflow: auto` or `overflow: hidden` property to the parent element which will establish a new block formatting context inside the children and it will expand to contain its children.
 
-###### References
-
-- https://css-tricks.com/all-about-floats/
-
 [[↑] Back to top](#table-of-contents)
 
 ### Describe `z-index` and how stacking context is formed.
@@ -191,11 +186,6 @@ Each stacking context is self-contained - after the element's contents are stack
 
 _Note: What exactly qualifies an element to create a stacking context is listed in this long set of [rules](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context#The_stacking_context)._
 
-###### References
-
-- https://css-tricks.com/almanac/properties/z/z-index/
-- https://philipwalton.com/articles/what-no-one-told-you-about-z-index/
-- https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
 
 [[↑] Back to top](#table-of-contents)
 
@@ -276,11 +266,6 @@ These techniques are related to accessibility (a11y).
 
 Even if WAI-ARIA is the ideal solution, I would go with the `absolute` positioning approach, as it has the least caveats, works for most elements and it's an easy technique.
 
-###### References
-
-- https://www.w3.org/TR/wai-aria-1.1/
-- https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA
-- http://a11yproject.com/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -319,9 +304,6 @@ Basic coloring can be done by setting two attributes on the node: `fill` and `st
 
 The above `fill="purple"` is an example of a _presentational attribute_. Interestingly, and unlike inline styles like `style="fill: purple"` which also happens to be an attribute, presentational attributes can be [overriden by CSS](https://css-tricks.com/presentation-attributes-vs-inline-styles/) styles defined in a stylesheet. So, if you did something like `svg { fill: blue; }` it would override the purple fill we've defined.
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Fills_and_Strokes
 
 [[↑] Back to top](#table-of-contents)
 
@@ -344,10 +326,6 @@ Here is an example of `print` media type's usage:
 }
 ```
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/CSS/@media#Syntax
-
 [[↑] Back to top](#table-of-contents)
 
 ### What are some of the "gotchas" for writing efficient CSS?
@@ -358,10 +336,6 @@ Firstly, understand that browsers match selectors from rightmost (key selector) 
 
 Be aware of which CSS properties [trigger](https://csstriggers.com/) reflow, repaint, and compositing. Avoid writing styles that change the layout (trigger reflow) where possible.
 
-###### References
-
-- https://developers.google.com/web/fundamentals/performance/rendering/
-- https://csstriggers.com/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -409,9 +383,6 @@ This part is related to the above about [writing efficient CSS](#what-are-some-o
 
 For example with this selector `p span`, browsers firstly find all the `<span>` elements and traverse up its parent all the way up to the root to find the `<p>` element. For a particular `<span>`, as soon as it finds a `<p>`, it knows that the `<span>` matches and can stop its matching.
 
-###### References
-
-- https://stackoverflow.com/questions/5797014/why-do-browsers-match-css-selectors-from-right-to-left
 
 [[↑] Back to top](#table-of-contents)
 
@@ -422,10 +393,6 @@ A CSS pseudo-element is a keyword added to a selector that lets you style a spec
 - `:first-line` and `:first-letter` can be used to decorate text.
 - Used in the `.clearfix` hack as shown above to add a zero-space element with `clear: both`.
 - Triangular arrows in tooltips use `:before` and `:after`. Encourages separation of concerns because the triangle is considered part of styling and not really the DOM.
-
-###### References
-
-- https://css-tricks.com/almanac/selectors/a/after-and-before/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -448,9 +415,6 @@ The box model has the following rules:
 - The `width` of an element is calculated by the content's `width`.
 - By default, `padding`s and `border`s are not part of the `width` and `height` of an element.
 
-###### References
-
-- https://www.smashingmagazine.com/2010/06/the-principles-of-cross-browser-css-coding/#understand-the-css-box-model
 
 [[↑] Back to top](#table-of-contents)
 
@@ -462,9 +426,6 @@ The box model has the following rules:
 - The `width` of an element is now calculated by the content's `width` + horizontal `padding` + horizontal `border` width.
 - Taking into account `padding`s and `border`s as part of our box model resonates better with how designers actually imagine content in grids.
 
-###### References
-
-- https://www.paulirish.com/2012/box-sizing-border-box-ftw/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -510,9 +471,6 @@ A positioned element is an element whose computed `position` property is either 
 - `fixed` - The element is removed from the flow of the page and positioned at a specified position relative to the viewport and doesn't move when scrolled.
 - `sticky` - Sticky positioning is a hybrid of relative and fixed positioning. The element is treated as `relative` positioned until it crosses a specified threshold, at which point it is treated as `fixed` positioned.
 
-###### References
-
-- https://developer.mozilla.org/en/docs/Web/CSS/position
 
 [[↑] Back to top](#table-of-contents)
 
@@ -531,10 +489,6 @@ Yes. Flexbox is mainly meant for 1-dimensional layouts while Grid is meant for 2
 Flexbox solves many common problems in CSS, such as vertical centering of elements within a container, sticky footer, etc. Bootstrap and Bulma are based on Flexbox, and it is probably the recommended way to create layouts these days. Have tried Flexbox before but ran into some browser incompatibility issues (Safari) in using `flex-grow`, and I had to rewrite my code using `inline-blocks` and math to calculate the widths in percentages, it wasn't a nice experience.
 
 Grid is by far the most intuitive approach for creating grid-based layouts (it better be!) but browser support is not wide at the moment.
-
-###### References
-
-- https://philipwalton.github.io/solved-by-flexbox/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -592,11 +546,6 @@ Both have these methods have some issues that need to be weighed:
 - Responsive design can be quite challenging, as you're essentially using a single albeit responsive layout to fit all situations. How to set the media query breakpoints is one such challenge. Do you use standardized breakpoint values? Or, do you use breakpoints that make sense to your particular layout? What if that layout changes?
 - Adaptive design generally requires user agent sniffing, or DPI detection, etc., all of which can prove unreliable.
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Archive/Apps/Design/UI_layout_basics/Responsive_design_versus_adaptive_design
-- http://mediumwell.com/responsive-adaptive-mobile/
-- https://css-tricks.com/the-difference-between-responsive-and-adaptive-design/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -631,12 +580,6 @@ It is important to note that browsers which don't support HTML5's `srcset` (i.e.
 
 For icons, I would also opt to use SVGs and icon fonts where possible, as they render very crisply regardless of resolution.
 
-###### References
-
-- https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-srcset/
-- http://scottjehl.github.io/picturefill/
-- https://aclaes.com/responsive-background-images-with-srcset-and-sizes/
-
 [[↑] Back to top](#table-of-contents)
 
 ### Is there any reason you'd want to use `translate()` instead of `absolute` positioning, or vice-versa? And why?
@@ -645,25 +588,9 @@ For icons, I would also opt to use SVGs and icon fonts where possible, as they r
 
 When using `translate()`, the element still occupies its original space (sort of like `position: relative`), unlike in changing the absolute positioning.
 
-###### References
-
-- https://www.paulirish.com/2012/why-moving-elements-with-translate-is-better-than-posabs-topleft/
-
 [[↑] Back to top](#table-of-contents)
 
 ### How is clearfix css property useful?
-
-[[↑] Back to top](#table-of-contents)
-
-### Can you explain the difference between px, em and rem as they relate to font sizing?
-
-[[↑] Back to top](#table-of-contents)
-
-### Can you give an example of a pseudo class? Can you provide an example use case for a pseudo class?
-
-[[↑] Back to top](#table-of-contents)
-
-### What is the difference between a block level element and an inline element. Can you provide examples of each type of element?
 
 [[↑] Back to top](#table-of-contents)
 
