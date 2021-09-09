@@ -50,7 +50,12 @@ title: CSS Questions
 
 ### How many ways can you embed css code into an html file?
 
-In the <header> element of the HTML file, you can include <link rel="stylesheet" href="style.css"> which you start a new file called style.css and type the CSS code there, or you can do inline style like putting CSS code inside of the <style> … </style>, or you can put code in side the tag like <img src= “hello.jpeg” width= “100px” />
+three ways to insert CSS
+- external CSS (better choice, a separate css file)
+- internal CSS (putting css directly in the html page)
+- inline CSS (not recommended)
+  
+In the `<header>` element of the HTML file, you can include `<link rel="stylesheet" href="style.css">` which you start a new file called style.css and type the CSS code there, or you can put CSS code inside of the `<style> … </style>` in HTML file, or you can do inline style by putting code in side the tag like `<img src= “hello.jpeg” width= “100px” />`
   
 [[↑] Back to top](#table-of-contents)
 
@@ -60,7 +65,8 @@ CSS is for styling the page, making the page prettier, and you can put some anim
 [[↑] Back to top](#table-of-contents)
 
 ### What is pseudo element and pseudo class?
-Like button:hover is pseudo class
+- pseudo class(:) - Like button:hover and a:visited/:focus, specifies a special state of the selected element(s)
+- pseudo element(::) - like p::after and button::before, style a specific part of the selected element(s)
 
 [[↑] Back to top](#table-of-contents)
 
@@ -79,6 +85,10 @@ div {
 ### What is margin collapse?
 When declare a margin on the top of the CSS code and then declare again in the following code
 
+	- Sometimes two margins collapse into a single margin.
+	- take the greater value, only top and bottom margins!
+	- top bottom margin of an element collapses when it comes in contact with one another
+
 [[↑] Back to top](#table-of-contents)
 
 ### What are CSS box-sizing attributes?
@@ -87,7 +97,9 @@ Box-sizing calculates the size of the box differently and usually prettier becau
 [[↑] Back to top](#table-of-contents)
 
 ### CSS to hide HTML elements and their differences?
-display: invisible 
+- visibility:hidden: hide it, cover it, still there in the DOM tree, just you can not see it
+- display:none: the element will be gone from the DOM tree, disappear from UI
+- opacity 0: occupy the space and consumes clicks
 
 [[↑] Back to top](#table-of-contents)
 
@@ -97,6 +109,10 @@ display: invisible
 
 ### What is px, em and rem?
 
+specify sizes or lengths of elements using various units of measure
+- PX: You get what you asked for. Pixels may be good at spacing and layout, but are not good fit for font-size.
+- EM: Relative to the parent element
+- REM: Relative to the root element (HTML tag)
 
 [[↑] Back to top](#table-of-contents)
 
@@ -200,11 +216,6 @@ In a BFC, each box's left outer edge touches the left edge of the containing blo
 
 Vertical margins between adjacent block-level boxes in a BFC collapse. Read more on [collapsing margins](https://www.sitepoint.com/web-foundations/collapsing-margins/).
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
-- https://www.sitepoint.com/understanding-block-formatting-contexts-in-css/
-
 [[↑] Back to top](#table-of-contents)
 
 ### What are the various clearing techniques and which is appropriate for what context?
@@ -229,10 +240,6 @@ CSS sprites combine multiple images into one single larger image. It is a common
 
 - Reduce the number of HTTP requests for multiple images (only one single request is required per spritesheet). But with HTTP2, loading multiple images is no longer much of an issue.
 - Advance downloading of assets that won't be downloaded until needed, such as images that only appear upon `:hover` pseudo-states. Blinking wouldn't be seen.
-
-###### References
-
-- https://css-tricks.com/css-sprites/
 
 [[↑] Back to top](#table-of-contents)
 
