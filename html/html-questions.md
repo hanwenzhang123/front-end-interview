@@ -21,7 +21,8 @@ title: HTML Questions
 - [What is the difference between block element and inline element?](#have-you-used-different-html-templating-languages-before)
 - [List some form elements](#have-you-used-different-html-templating-languages-before)
 - [What are empty elements in HTML?](#have-you-used-different-html-templating-languages-before)
-- [What is the difference between canvas and svg?](#have-you-used-different-html-templating-languages-before)
+- [Video and Audio Tag](#video-and-audio-tag)
+- [What is the difference between canvas and svg?](#what-is-the-difference-between-canvas-and-svg)
 
 ### What does a DOCTYPE do?
 
@@ -214,3 +215,48 @@ The form-data can be sent as URL variables (with method="get") (non-secure data,
 ```
 
 [[↑] Back to top](#table-of-contents)
+
+### What are empty elements in HTML?
+
+Empty elements (also called self-closing or void elements) are not container tags. An empty element is an element cannot have any child nodes.
+
+`<br>`;`<hr>`;`<img src="img_girl.jpg" alt="Girl in a jacket" width="500" height="600">`;
+	
+[[↑] Back to top](#table-of-contents)
+
+### Video and Audio Tag
+
+The `<video>` tag contains one or more `<source>` tags with different video sources. The browser will choose the first source it supports.
+
+The text between the `<video>` and `</video>` tags will only be displayed in browsers that do not support the `<video>` element.
+
+```html
+<video width="320" height="240" controls>
+  <source src="movie.mp4" type="video/mp4">
+  <source src="movie.ogg" type="video/ogg">
+  Your browser does not support the video tag.
+</video>
+```
+
+Audio
+```html
+<audio controls>
+  <source src="horse.ogg" type="audio/ogg">
+  <source src="horse.mp3" type="audio/mpeg">
+  Your browser does not support the audio tag.
+</audio>
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### What is the difference between canvas and svg?
+
+Both are HTML Graphics tags.
+
+The `<canvas>` element is a container for graphics. SVG gives better performance with smaller number of objects or larger surface. Canvas gives better performance with smaller surface or larger number of objects. SVG is vector based and composed of shapes.
+	
+SVG is a language for describing 2D graphics in XML. Canvas draws 2D graphics, on the fly (with a JavaScript). 
+SVG is faster when rendering really large objects, but slower when rendering many objects. A game would probably be faster in Canvas. A huge map program would probably be faster in SVG.
+	
+[[↑] Back to top](#table-of-contents)
+
