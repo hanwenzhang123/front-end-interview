@@ -2,8 +2,6 @@
 title: JavaScript Questions
 ---
 
-Answers to [Front-end Job Interview Questions - JS Questions](https://github.com/h5bp/Front-end-Developer-Interview-Questions/blob/master/src/questions/javascript-questions.md). Pull requests for suggestions and corrections are welcome!
-
 ## Table of Contents
 
 - [Explain event delegation](#explain-event-delegation)
@@ -60,6 +58,8 @@ Answers to [Front-end Job Interview Questions - JS Questions](https://github.com
 - [What are the benefits of using spread syntax and how is it different from rest syntax?](#what-are-the-benefits-of-using-spread-syntax-and-how-is-it-different-from-rest-syntax)
 - [How can you share code between files?](#how-can-you-share-code-between-files)
 - [Why you might want to create static class members?](#why-you-might-want-to-create-static-class-members)
+- [What is the difference between while and do-while loops in JavaScript?](#what-is-the-difference-between-while-and-do-while-loops-in-JavaScript)
+- [What is a promise? Where and how would you use promise?](#what-is-a-promise-where-and-how-would-you-use-promise)
 
 ### Explain event delegation
 
@@ -1580,6 +1580,10 @@ Static class members (properties/methods) are not tied to a specific instance of
 
 [[↑] Back to top](#table-of-contents)
 
-### Other Answers
+### What is the difference between while and do-while loops in JavaScript?
 
-- http://flowerszhong.github.io/2013/11/20/javascript-questions.html
+[[↑] Back to top](#table-of-contents)
+
+### What is a promise? Where and how would you use promise?
+
+[[↑] Back to top](#table-of-contents)
