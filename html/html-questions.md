@@ -15,6 +15,13 @@ title: HTML Questions
 - [What is progressive rendering?](#what-is-progressive-rendering)
 - [Why you would use a `srcset` attribute in an image tag? Explain the process the browser uses when evaluating the content of this attribute.](#why-you-would-use-a-srcset-attribute-in-an-image-tag-explain-the-process-the-browser-uses-when-evaluating-the-content-of-this-attribute)
 - [Have you used different HTML templating languages before?](#have-you-used-different-html-templating-languages-before)
+- [What is the meta tag in the head tag? Why do we need it?](#have-you-used-different-html-templating-languages-before)
+- [List some semantic tags in HTML5](#have-you-used-different-html-templating-languages-before)
+- [Link element in separate tab](#link-element-in-separate-tab)
+- [What is the difference between block element and inline element?](#have-you-used-different-html-templating-languages-before)
+- [List some form elements](#have-you-used-different-html-templating-languages-before)
+- [What are empty elements in HTML?](#have-you-used-different-html-templating-languages-before)
+- [What is the difference between canvas and svg?](#have-you-used-different-html-templating-languages-before)
 
 ### What does a DOCTYPE do?
 
@@ -25,6 +32,9 @@ The declaration is not an HTML tag. It is an "information" to the browser about 
 
 The <!DOCTYPE> declaration is NOT case sensitive.
 The DOCTYPE declaration for the HTML5 standards is `<!DOCTYPE html>`. 
+
+#### What is that !DOCTYPE we place at the top of the HTML file? Why do we need it?
+!DOCTYPE is for the browser to know here is the HTML code that we will be rendering, so when we create the HTML file, the first line of the code is to place a <!DOCTYPE> on top of everything to let the browser know the following code is for HTML.
 
 [[↑] Back to top](#table-of-contents)
 
@@ -48,16 +58,21 @@ Make use of the `hreflang` attribute in the `<head>`. Eg. `<link rel="alternate"
 
 ### What are `data-` attributes good for?
 
-Before JavaScript frameworks became popular, front end developers used `data-` attributes to store extra data within the DOM itself, without other hacks such as non-standard attributes, extra properties on the DOM. It is intended to store custom data private to the page or application, for which there are no more appropriate attributes or elements.
+The data-* attribute is used to store custom data private to the page or application.
+  
+The data-* attribute gives us the ability to embed custom data attributes on all HTML elements.
+  
+The stored (custom) data can then be used in the page's JavaScript to create a more engaging user experience.
 
-These days, using `data-` attributes is generally not encouraged. One reason is that users can modify the data attribute easily by using inspect element in the browser. The data model is better stored within JavaScript itself and stay updated with the DOM via data binding possibly through a library or a framework.
-
-However, one perfectly valid use of data attributes, is to add a hook for _end to end_ testing frameworks such as Selenium and Capybara without having to create a meaningless classes or ID attributes. The element needs a way to be found by a particular Selenium spec and something like `data-selector='the-thing'` is a valid way to do so without convoluting the semantic markup otherwise.
-
-###### References
-
-- http://html5doctor.com/html5-custom-data-attributes/
-- https://www.w3.org/TR/html5/dom.html#embedding-custom-non-visible-data-with-the-data-*-attributes
+```html
+<ul>
+  <li data-animal-type="bird">Owl</li>
+  <li data-animal-type="fish">Salmon</li>
+  <li data-animal-type="spider">Tarantula</li>
+</ul>
+```
+  
+These days, using data- attributes is generally not encouraged. However, one valid use of data attributes is to add a hook for _end to end_ testing frameworks such as Selenium. The element needs a way to be found by a particular Selenium spec and something like `data-selector='the-thing'` is a valid way to do so without convoluting the semantic markup otherwise.
 
 [[↑] Back to top](#table-of-contents)
 
@@ -71,10 +86,6 @@ However, one perfectly valid use of data attributes, is to add a hook for _end t
 - Performance and integration - Providing greater speed optimization and better usage of computer hardware.
 - Device access - Allowing for the usage of various input and output devices.
 - Styling - Letting authors write more sophisticated themes.
-
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5
 
 [[↑] Back to top](#table-of-contents)
 
@@ -93,26 +104,15 @@ All the above-mentioned technologies are key-value storage mechanisms on the cli
 
 _Note: If the user decides to clear browsing data via whatever mechanism provided by the browser, this will clear out any `cookie`, `localStorage`, or `sessionStorage` stored. It's important to keep this in mind when designing for local persistance, especially when comparing to alternatives such as server side storing in a database or similar (which of course will persist despite user actions)._
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
-- http://tutorial.techaltum.com/local-and-session-storage.html
-
 [[↑] Back to top](#table-of-contents)
 
 ### Describe the difference between `<script>`, `<script async>` and `<script defer>`.
 
 - `<script>` - HTML parsing is blocked, the script is fetched and executed immediately, HTML parsing resumes after the script is executed.
 - `<script async>` - The script will be fetched in parallel to HTML parsing and executed as soon as it is available (potentially before HTML parsing completes). Use `async` when the script is independent of any other scripts on the page, for example, analytics.
-- `<script defer>` - The script will be fetched in parallel to HTML parsing and executed when the page has finished parsing. If there are multiple of them, each deferred script is executed in the order they were encoun­tered in the document. If a script relies on a fully-parsed DOM, the `defer` attribute will be useful in ensuring that the HTML is fully parsed before executing. There's not much difference in putting a normal `<script>` at the end of `<body>`. A deferred script must not contain `document.write`.
+- `<script defer>` - The script will be fetched in parallel to HTML parsing and executed when the page has finished parsing. If there are multiple of them, each deferred script is executed in the order they were encoun­tered in the document. If a script relies on a fully-parsed DOM, the `defer` attribute will be useful in ensuring that the HTML is fully parsed before executing. There's not much difference in putting a normal `<script>` at the end of `<body>`. 
 
 Note: The `async` and `defer` attrib­utes are ignored for scripts that have no `src` attribute.
-
-###### References
-
-- http://www.growingwiththeweb.com/2014/02/async-vs-defer-attributes.html
-- https://stackoverflow.com/questions/10808109/script-tag-async-defer
-- https://bitsofco.de/async-vs-defer/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -120,21 +120,15 @@ Note: The `async` and `defer` attrib­utes are ignored for scripts that have no 
 
 **Placing `<link>`s in the `<head>`**
 
-Putting `<link>`s in the `<head>` is part of proper specification in building an optimized website. When a page first loads, HTML and CSS are being parsed simultaneously; HTML creates the DOM (Document Object Model) and CSS creates the CSSOM (CSS Object Model). Both are needed to create the visuals in a website, allowing for a quick "first meaningful paint" timing. This progressive rendering is a category optimization sites are measured in their performance scores. Putting stylesheets near the bottom of the document is what prohibits progressive rendering in many browsers. Some browsers block rendering to avoid having to repaint elements of the page if their styles change. The user is then stuck viewing a blank white page. Other times there can be flashes of unstyled content (FOUC), which show a webpage with no styling applied.
+When a page first loads, HTML and CSS are being parsed simultaneously; HTML creates the DOM (Document Object Model) and CSS creates the CSSOM (CSS Object Model). Both are needed to create the visuals in a website, allowing for a quick "first meaningful paint" timing. This progressive rendering is a category optimization sites are measured in their performance scores. 
 
 **Placing `<script>`s just before `</body>`**
 
 `<script>` tags block HTML parsing while they are being downloaded and executed which can slow down your page. Placing the scripts at the bottom will allow the HTML to be parsed and displayed to the user first.
 
-An exception for positioning of `<script>`s at the bottom is when your script contains `document.write()`, but these days it's not a good practice to use `document.write()`. Also, placing `<script>`s at the bottom means that the browser cannot start downloading the scripts until the entire document is parsed. This ensures your code that needs to manipulate DOM elements will not throw an error and halt the entire script. If you need to put `<script>` in the `<head>`, use the `defer` attribute, which will achieve the same effect of downloading and running the script only after the HTML is parsed.
-
-Keep in mind that putting scripts just before the closing `</body>` tag will create the illusion that the page loads faster on an empty cache (since the scripts won't block downloading the rest of the document). However, if you have some code you want to run during page load, it will only start executing after the entire page has loaded. If you put those scripts in the `<head>` tag, they would start executing before - so on a primed cache the page would actually appear to load faster.
-
-###### References
-
-- https://developer.yahoo.com/performance/rules.html#css_top
-- https://www.techrepublic.com/blog/web-designer/how-to-prevent-flash-of-unstyled-content-on-your-websites/
-- https://developers.google.com/web/fundamentals/performance/critical-rendering-path/
+Placing `<script>`s at the bottom means that the browser cannot start downloading the scripts until the entire document is parsed. This ensures your code that needs to manipulate DOM elements will not throw an error and halt the entire script. 
+  
+If you need to put `<script>` in the `<head>`, use the `defer` attribute, which will achieve the same effect of downloading and running the script only after the HTML is parsed.
 
 [[↑] Back to top](#table-of-contents)
 
@@ -142,18 +136,10 @@ Keep in mind that putting scripts just before the closing `</body>` tag will cre
 
 Progressive rendering is the name given to techniques used to improve the performance of a webpage (in particular, improve perceived load time) to render content for display as quickly as possible.
 
-It used to be much more prevalent in the days before broadband internet but it is still used in modern development as mobile data connections are becoming increasingly popular (and unreliable)!
-
 Examples of such techniques:
 
 - Lazy loading of images - Images on the page are not loaded all at once. JavaScript will be used to load an image when the user scrolls into the part of the page that displays the image.
 - Prioritizing visible content (or above-the-fold rendering) - Include only the minimum CSS/content/scripts necessary for the amount of page that would be rendered in the users browser first to display as quickly as possible, you can then use deferred scripts or listen for the `DOMContentLoaded`/`load` event to load in other resources and content.
-- Async HTML fragments - Flushing parts of the HTML to the browser as the page is constructed on the back end. More details on the technique can be found [here](http://www.ebaytechblog.com/2014/12/08/async-fragments-rediscovering-progressive-html-rendering-with-marko/).
-
-###### References
-
-- https://stackoverflow.com/questions/33651166/what-is-progressive-rendering
-- http://www.ebaytechblog.com/2014/12/08/async-fragments-rediscovering-progressive-html-rendering-with-marko/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -171,20 +157,29 @@ If the resolution is retina (2x), the browser will use the closest resolution ab
 
 `srcset`s solve the problem whereby you want to serve smaller image files to narrow screen devices, as they don't need huge images like desktop displays do — and also optionally that you want to serve different resolution images to high density/low-density screens.
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images
-- https://css-tricks.com/responsive-images-youre-just-changing-resolutions-use-srcset/
-
 [[↑] Back to top](#table-of-contents)
 
 ### Have you used different HTML templating languages before?
 
-Yes, Pug (formerly Jade), ERB, Slim, Handlebars, Jinja, Liquid, and EJS just to name a few. In my opinion, they are more or less the same and provide similar functionality of escaping content and helpful filters for manipulating the data to be displayed. Most templating engines will also allow you to inject your own filters in the event you need custom processing before display.
+Yes, EJS and Pug (formerly Jade), also heard about Handlebars. In my opinion, they are more or less the same and provide similar functionality of escaping content and helpful filters for manipulating the data to be displayed. Most templating engines will also allow you to inject your own filters in the event you need custom processing before display.
 
 [[↑] Back to top](#table-of-contents)
 
-### Other Answers
+### What is the meta tag in the head tag? Why do we need it?
+<meta> tag is for the inside information for the HTML file only, like description of what the code is for, which is important for SEO (search optimization). we do not visually see any of the code in the browser, whatever in the meta tag will not appear anywhere other than the source code, but the browser will analyze the information. 
+  
+### List some semantic tags in HTML5
+<section></section>; <article></article>; <footer></footer>; <nav></nav> and more
+  
+### Link element in separate tab
+#### Write a code snippet to achieve the requirements set up a link for user, user can click the link and redirect user to the Youtube in the separate tab
+<a href=“https://www.youtube.com/” target="_blank"></a>
 
-- https://neal.codes/blog/front-end-interview-questions-html/
-- http://peterdoes.it/2015/12/03/a-personal-exercise-front-end-job-interview-questions-and-my-answers-all/
+### What is the difference between block element and inline element?
+Block element takes the whole block that starts a new line while inline element takes the space as needed but does not start a new line; <div> is a block element while <span> is a inline element
+
+### List some form elements
+<form action= “/”>
+		<label for= “name”>Name: </label>
+		<input type= “text” name=”name”>
+	</form>
