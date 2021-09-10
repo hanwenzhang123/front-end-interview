@@ -231,7 +231,9 @@ Alternatively, give `overflow: auto` or `overflow: hidden` property to the paren
 
 The z-index property specifies the stack order of an element. 
 
-z-index only works on positioned elements (position: absolute, position: relative, position: fixed, or position: sticky) and flex items (elements that are direct children of display:flex elements).
+z-index only works on positioned elements (position: absolute, position: relative, position: fixed, or position: sticky) and flex items (elements that are direct children of display: flex elements).
+
+A higher value means the element will be closer to the top of the stacking order.
 
 If two positioned elements overlap without a z-index specified, the element positioned last in the HTML code will be shown on top. 
 
@@ -241,9 +243,7 @@ Without any `z-index` value, elements stack in the order that they appear in the
 
 ### Describe Block Formatting Context (BFC) and how it works.
 
-A Block Formatting Context (BFC) is part of the visual CSS rendering of a web page in which block boxes are laid out. Floats, absolutely positioned elements, `inline-blocks`, `table-cells`, `table-caption`s, and elements with `overflow` other than `visible` (except when that value has been propagated to the viewport) establish new block formatting contexts.
-
-Knowing how to establish a block formatting context is important, because without doing so, the containing box will not [contain floated children](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context#Make_float_content_and_alongside_content_the_same_height). This is similar to collapsing margins, but more insidious as you will find entire boxes collapsing in odd ways.
+A Block Formatting Context (BFC) is part of the visual CSS rendering of a web page in which block boxes are laid out. Floats, absolutely positioned elements, `inline-blocks`, `table-cells`, `table-caption`s, and elements with `overflow` other than `visible` (except when that value has been propagated to the viewport) establish new block formatting contexts, each box left outer edge touches the left edge of the containing block (for right-to-left formatting, right edges touch).
 
 A BFC is an HTML box that satisfies at least one of the following conditions:
 
@@ -251,10 +251,6 @@ A BFC is an HTML box that satisfies at least one of the following conditions:
 - The value of `position` is neither `static` nor `relative`.
 - The value of `display` is `table-cell`, `table-caption`, `inline-block`, `flex`, or `inline-flex`, `grid`, or `inline-grid`.
 - The value of `overflow` is not `visible`.
-
-In a BFC, each box's left outer edge touches the left edge of the containing block (for right-to-left formatting, right edges touch).
-
-Vertical margins between adjacent block-level boxes in a BFC collapse. Read more on [collapsing margins](https://www.sitepoint.com/web-foundations/collapsing-margins/).
 
 [[↑] Back to top](#table-of-contents)
 
@@ -268,14 +264,13 @@ In large projects, I would write a utility `.clearfix` class and use them in pla
 
 [[↑] Back to top](#table-of-contents)
 
-
 ### How would you approach fixing browser-specific styling issues?
 
 - After identifying the issue and the offending browser, use a separate style sheet that only loads when that specific browser is being used. This technique requires server-side rendering though.
 - Use libraries like Bootstrap that already handles these styling issues for you.
 - Use `autoprefixer` to automatically add vendor prefixes to your code.
 - Use Reset CSS or Normalize.css.
-- If you're using Postcss (or a similar transpiling library), there may be plugins which allow you to opt in for using modern CSS syntax (and even W3C proposals) that will transform those sections of your code into corresponding safe code that will work in the targets you've used.
+- If you're using Postcss (or a similar transpiling library), there may be plugins which allow you to opt in for using modern CSS syntax (and even W3C proposals) that will transform those sections of your code into corresponding safe code that will work in the targets you have used.
 
 [[↑] Back to top](#table-of-contents)
 
@@ -292,7 +287,7 @@ In large projects, I would write a utility `.clearfix` class and use them in pla
 
 ### Have you ever used a grid system, and if so, what do you prefer?
 
-Before Flex became popular (around 2014), the `float`-based grid system was the most reliable because it still has the most browser support among the alternative existing systems (flex, grid). Bootstrap was using the `float` approach until Bootstrap 4 which switched to the `flex`-based approach. As of writing (2020), `flex` is the recommended approach for building grid systems and has [decent browser support](https://caniuse.com/#search=flex).
+Before Flex became popular (around 2014), the `float`-based grid system was the most reliable because it still has the most browser support among the alternative existing systems (flex, grid). 
 
 For the adventurous, they can look into [CSS Grid Layout](https://css-tricks.com/snippets/css/complete-guide-grid/), which uses the shiny new `grid` property; it is even better than `flex` for building grid layouts and will be the de facto way to do so in the future.
 
@@ -300,9 +295,9 @@ For the adventurous, they can look into [CSS Grid Layout](https://css-tricks.com
 
 ### Are you familiar with styling SVG?
 
-Yes, there are several ways to color shapes (including specifying attributes on the object) using inline CSS, an embedded CSS section, or an external CSS file. Most SVG you'll find around the web use inline CSS, but there are advantages and disadvantages associated with each type.
+Yes, there are several ways to color shapes (including specifying attributes on the object) using inline CSS, an embedded CSS section, or an external CSS file. 
 
-Basic coloring can be done by setting two attributes on the node: `fill` and `stroke`. `fill` sets the color inside the object and `stroke` sets the color of the line drawn around the object. You can use the same CSS color naming schemes that you use in HTML, whether that's color names (that is `red`), RGB values (that is `rgb(255,0,0)`), Hex values, RGBA values, etc.
+Basic coloring can be done by setting two attributes on the node: `fill` and `stroke`. `fill` sets the color inside the object and `stroke` sets the color of the line drawn around the object. 
 
 ```html
 <rect
@@ -316,9 +311,6 @@ Basic coloring can be done by setting two attributes on the node: `fill` and `st
   stroke-opacity="0.8"
 />
 ```
-
-The above `fill="purple"` is an example of a _presentational attribute_. Interestingly, and unlike inline styles like `style="fill: purple"` which also happens to be an attribute, presentational attributes can be [overriden by CSS](https://css-tricks.com/presentation-attributes-vs-inline-styles/) styles defined in a stylesheet. So, if you did something like `svg { fill: blue; }` it would override the purple fill we've defined.
-
 
 [[↑] Back to top](#table-of-contents)
 
@@ -343,12 +335,9 @@ media queries - for responsive design - change the styling once the size reaches
 
 ### What are some of the "gotchas" for writing efficient CSS?
 
-Firstly, understand that browsers match selectors from rightmost (key selector) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector. Hence avoid key selectors that are tag and universal selectors. They match a large number of elements and browsers will have to do more work in determining if the parents do match.
-
-[BEM (Block Element Modifier)](https://bem.info/) methodology recommends that everything has a single class, and, where you need hierarchy, that gets baked into the name of the class as well, this naturally makes the selector efficient and easy to override.
-
-Be aware of which CSS properties [trigger](https://csstriggers.com/) reflow, repaint, and compositing. Avoid writing styles that change the layout (trigger reflow) where possible.
-
+- Understand that browsers match selectors from rightmost (key selector) to left. Browsers filter out elements in the DOM according to the key selector and traverse up its parent elements to determine matches. The shorter the length of the selector chain, the faster the browser can determine if that element matches the selector. 
+- Avoid key selectors that are tag and universal selectors. They match a large number of elements and browsers will have to do more work in determining if the parents do match.
+- BEM (Block Element Modifier) methodology recommends that everything has a single class, and, where you need hierarchy, that gets baked into the name of the class as well, this naturally makes the selector efficient and easy to override.
 
 [[↑] Back to top](#table-of-contents)
 
@@ -396,9 +385,7 @@ This part is related to the above about [writing efficient CSS](#what-are-some-o
 
 For example with this selector `p span`, browsers firstly find all the `<span>` elements and traverse up its parent all the way up to the root to find the `<p>` element. For a particular `<span>`, as soon as it finds a `<p>`, it knows that the `<span>` matches and can stop its matching.
 
-
 [[↑] Back to top](#table-of-contents)
-
 
 ### What is the CSS `display` property and can you give a few examples of its use?
 
@@ -455,7 +442,9 @@ A positioned element is an element whose computed `position` property is either 
 
 Yes. Flexbox is mainly meant for 1-dimensional layouts while Grid is meant for 2-dimensional layouts.
 
-Flexbox solves many common problems in CSS, such as vertical centering of elements within a container, sticky footer, etc. Bootstrap and Bulma are based on Flexbox, and it is probably the recommended way to create layouts these days. Have tried Flexbox before but ran into some browser incompatibility issues (Safari) in using `flex-grow`, and I had to rewrite my code using `inline-blocks` and math to calculate the widths in percentages, it wasn't a nice experience.
+Flexbox solves many common problems in CSS, such as vertical centering of elements within a container, sticky footer, etc. Bootstrap and Bulma are based on Flexbox, and it is probably the recommended way to create layouts these days. 
+
+Have tried Flexbox before but ran into some browser incompatibility issues (Safari) in using `flex-grow`, and I had to rewrite my code using `inline-blocks` and math to calculate the widths in percentages, it wasn't a nice experience.
 
 Grid is by far the most intuitive approach for creating grid-based layouts (it better be!) but browser support is not wide at the moment.
 
@@ -543,10 +532,6 @@ To overcome this problem, we can use responsive images, as specified in HTML5. I
 </div>
 ```
 
-It is important to note that browsers which don't support HTML5's `srcset` (i.e. IE11) will ignore it and use `src` instead. If we really need to support IE11 and we want to provide this feature for performance reasons, we can use a JavaScript polyfill, e.g. Picturefill (link in the references).
-
-For icons, I would also opt to use SVGs and icon fonts where possible, as they render very crisply regardless of resolution.
-
 [[↑] Back to top](#table-of-contents)
 
 ### Is there any reason you'd want to use `translate()` instead of `absolute` positioning, or vice-versa? And why?
@@ -556,10 +541,4 @@ For icons, I would also opt to use SVGs and icon fonts where possible, as they r
 When using `translate()`, the element still occupies its original space (sort of like `position: relative`), unlike in changing the absolute positioning.
 
 [[↑] Back to top](#table-of-contents)
-
-
-### Other Answers
-
-- https://neal.codes/blog/front-end-interview-css-questions
-- https://quizlet.com/28293152/front-end-interview-questions-css-flash-cards/
-- http://peterdoes.it/2015/12/03/a-personal-exercise-front-end-job-interview-questions-and-my-answers-all/
+  
