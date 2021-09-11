@@ -3,7 +3,12 @@ title: JavaScript Questions
 ---
 
 ## Table of Contents
-
+- [Please explain to me the JS mechanism (how to handle the sync and async code)?](#please-explain-to-me-the-JS-mechanism-how-to-handle-the-sync-and-async-code)
+- [What is the difference between function declaration and function expression?](#what-is-the-difference-between-function-declaration-and-function-expression)
+- [let vs const vs var](#let-vs-const-vs-var)
+- [List ES6 features you know](#list-ES6-features-you-know)
+- [What is the new keyword in the JS](#what-is-the-new-keyword-in-the-JS)
+- [Function prototype methods, bind vs apply vs call?](#function-prototype-methods-bind-vs-apply-vs-call)
 - [Explain event delegation](#explain-event-delegation)
 - [Explain how `this` works in JavaScript](#explain-how-this-works-in-javascript)
 - [Explain how prototypal inheritance works](#explain-how-prototypal-inheritance-works)
@@ -103,7 +108,7 @@ Three are for variable declaration. Let and const are the concepts being introdu
 ### List ES6 features you know
 
 - Let and const - (let const - scope to the block) (var - value hoisting - put things on the top, scope to the function)
-- Arrow function - (does not have "this", "arguments")
+- Arrow function - (does not have "this" within it to be referred to the current object)
 - Template literals - (`..${}..`)
 - Rest operator - (...rest)
 - Spread operator - (...)
@@ -192,16 +197,37 @@ bind() - referring to “this” object with a new function that is specifically
 
 ### Explain event delegation
 
+Event delegation allows you to avoid adding event listeners to specific nodes; instead, the event listener is added to one parent - (Adding a listener on the next higher element instead of every child element itself)
+That event listener analyzes bubbled events to find a match on child elements.
+Instead of attaching the event listeners directly to the buttons, you delegate listening to the parent <div id="buttons"> . 
+When a button is clicked, the listener of the parent element catches the bubbling event (event propagation - capture, target, bubble).
+
 Event delegation is a technique involving adding event listeners to a parent element instead of adding them to the descendant elements. The listener will fire whenever the event is triggered on the descendant elements due to event bubbling up the DOM. The benefits of this technique are:
 
 - Memory footprint goes down because only one single handler is needed on the parent element, rather than having to attach event handlers on each descendant.
 - There is no need to unbind the handler from elements that are removed and to bind the event for new elements.
 
+```javascript
+const listItems = document.querySelectorAll('li');
+const list = document.querySelector('ul');
+
+// listItems.forEach(listItem => {
+//   listItem.addEventListener('click', event => {
+//     event.target.classList.toggle('highlight');
+//   });
+// });
+
+list.addEventListener('click', event => {
+  // event.target.classList.toggle('highlight'); - no good when we have a complex structure
+  event.target.closest('li').classList.toggle('highlight');
+}); 
+```
+    
 [[↑] Back to top](#table-of-contents)
 
 ### Explain how `this` works in JavaScript
 
-There's no simple explanation for `this`; it is one of the most confusing concepts in JavaScript. A hand-wavey explanation is that the value of `this` depends on how the function is called. I have read many explanations on `this` online, and I found [Arnav Aggrawal](https://medium.com/@arnav_aggarwal)'s explanation to be the clearest. The following rules are applied:
+The value of `this` depends on how the function is called. 
 
 1. If the `new` keyword is used when calling the function, `this` inside the function is a brand new object.
 2. If `apply`, `call`, or `bind` are used to call/create a function, `this` inside the function is the object that is passed in as the argument.
@@ -210,128 +236,86 @@ There's no simple explanation for `this`; it is one of the most confusing concep
 5. If multiple of the above rules apply, the rule that is higher wins and will set the `this` value.
 6. If the function is an ES2015 arrow function, it ignores all the rules above and receives the `this` value of its surrounding scope at the time it is created.
 
-For an in-depth explanation, do check out his [article on Medium](https://codeburst.io/the-simple-rules-to-this-in-javascript-35d97f31bde3).
-
 #### Can you give an example of one of the ways that working with this has changed in ES6?
 
-ES6 allows you to use [arrow functions](http://2ality.com/2017/12/alternate-this.html#arrow-functions) which uses the [enclosing lexical scope](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions#No_separate_this). This is usually convenient, but does prevent the caller from controlling context via `.call` or `.apply`—the consequences being that a library such as `jQuery` will not properly bind `this` in your event handler functions. Thus, it's important to keep this in mind when refactoring large legacy applications.
-
-###### References
-
-- https://codeburst.io/the-simple-rules-to-this-in-javascript-35d97f31bde3
-- https://stackoverflow.com/a/3127440/1751946
-
+ES6 allows you to use arrow functions which uses the enclosing lexical scope. This is usually convenient, but does prevent the caller from controlling context via `.call` or `.apply`, arrow functions does not have its own bindings to this.
+    
+```javascript
+const myObject = {
+  myMethod: () => {
+    console.log(this); // this === window or global object
+  }
+};
+    
+const myObject = {
+  myArrowFunction: null,
+  myMethod: function () {
+    this.myArrowFunction = () => { console.log(this) }; // this === myObject
+  }
+};
+```
+    
 [[↑] Back to top](#table-of-contents)
 
 ### Explain how prototypal inheritance works
+    
+Every object with its methods and properties contains an internal and hidden property known as `Prototype`. The Prototypal Inheritance is a feature in javascript used to add methods and properties in objects. It is a method by which an object can inherit the properties and methods of another object. It is being set using `__proto__`.
+    
+The core idea of Prototypal Inheritance is that an object can point to another object and inherit all its properties. The main purpose is to allow multiple instances of an object to share common properties, hence, the Singleton Pattern.
+    
+ ```javascript
+   
+//syntax
+ChildObject.__proto__ = ParentObject
+    
+//example
+// object person
+let person = {
+    talk: true,
+    Canfly() {
+        return "Sorry, Can't fly";
+    },
+};
+// Object GFGuser
+let GFGuser = {
+    CanCode: true,
+    CanCook() {
+        return "Can't say";
+    },
 
-This is an extremely common JavaScript interview question. All JavaScript objects have a `__proto__` property with the exception of objects created with `__Object.create(null)__`, that is a reference to another object, which is called the object's "prototype". When a property is accessed on an object and if the property is not found on that object, the JavaScript engine looks at the object's `__proto__`, and the `__proto__`'s `__proto__` and so on, until it finds the property defined on one of the `__proto__`s or until it reaches the end of the prototype chain. This behavior simulates classical inheritance, but it is really more of [delegation than inheritance](https://davidwalsh.name/javascript-objects).
-
-#### Example of Prototypal Inheritance
-
-We already have a build-in `Object.create`, but if you were to provide a polyfill for it, that might look like:
-
-```js
-if (typeof Object.create !== 'function') {
-  Object.create = function (parent) {
-    function Tmp() {}
-    Tmp.prototype = parent;
-    return new Tmp();
-  };
-}
-
-const Parent = function () {
-  this.name = 'Parent';
+  //  Inheriting the properties and methods of person
+    __proto__: person, 
 };
 
-Parent.prototype.greet = function () {
-  console.log('hello from Parent');
-};
+// Printing on console
+// Property of person
+console.log("Can a GFG User talk: " + GFGuser.talk); 
 
-const child = Object.create(Parent.prototype);
+// Method of person
+console.log("Can a GFG User fly: " + GFGuser.Canfly()); 
 
-child.cry = function () {
-  console.log('waaaaaahhhh!');
-};
+// Property of GFGuser
+console.log("Can a GFG User code: " + GFGuser.CanCode); 
 
-child.cry();
-// Outputs: waaaaaahhhh!
-
-child.greet();
-// Outputs: hello from Parent
+// Method of GFGuser
+console.log("Can a GFG User cook: " + GFGuser.CanCook());
 ```
-
-Things to note are:
-
-- `.greet` is not defined on the _child_, so the engine goes up the prototype chain and finds `.greet` off the inherited from _Parent_.
-- We need to call `Object.create` in one of following ways for the prototype methods to be inherited:
-  - Object.create(Parent.prototype);
-  - Object.create(new Parent(null));
-  - Object.create(objLiteral);
-  - Currently, `child.constructor` is pointing to the `Parent`:
-
-```js
-child.constructor
-ƒ () {
-  this.name = "Parent";
-}
-child.constructor.name
-"Parent"
-```
-
-- If we'd like to correct this, one option would be to do:
-
-```js
-function Child() {
-  Parent.call(this);
-  this.name = 'child';
-}
-
-Child.prototype = Parent.prototype;
-Child.prototype.constructor = Child;
-
-const c = new Child();
-
-c.cry();
-// Outputs: waaaaaahhhh!
-
-c.greet();
-// Outputs: hello from Parent
-
-c.constructor.name;
-// Outputs: "Child"
-```
-
 
 [[↑] Back to top](#table-of-contents)
 
 ### What do you think of AMD vs CommonJS?
 
-Both are ways to implement a module system, which was not natively present in JavaScript until ES2015 came along. CommonJS is synchronous while AMD (Asynchronous Module Definition) is obviously asynchronous. CommonJS is designed with server-side development in mind while AMD, with its support for asynchronous loading of modules, is more intended for browsers.
+CommonJS is synchronous while AMD (Asynchronous Module Definition) is obviously asynchronous. CommonJS is designed with server-side development in mind while AMD, with its support for asynchronous loading of modules, is more intended for browsers.
 
-I find AMD syntax to be quite verbose and CommonJS is closer to the style you would write import statements in other languages. Most of the time, I find AMD unnecessary, because if you served all your JavaScript into one concatenated bundle file, you wouldn't benefit from the async loading properties. Also, CommonJS syntax is closer to Node style of writing modules and there is less context-switching overhead when switching between client side and server side JavaScript development.
-
-I'm glad that with ES2015 modules, that has support for both synchronous and asynchronous loading, we can finally just stick to one approach. Although it hasn't been fully rolled out in browsers and in Node, we can always use transpilers to convert our code.
-
+With ES2015 modules, that has support for both synchronous and asynchronous loading, we can finally just stick to one approach. Although it hasn't been fully rolled out in browsers and in Node, we can always use transpilers to convert our code.
 
 [[↑] Back to top](#table-of-contents)
 
 ### Explain why the following doesn't work as an IIFE: `function foo(){ }();`. What needs to be changed to properly make it an IIFE?
 
-IIFE stands for Immediately Invoked Function Expressions. The JavaScript parser reads `function foo(){ }();` as `function foo(){ }` and `();`, where the former is a _function declaration_ and the latter (a pair of parentheses) is an attempt at calling a function but there is no name specified, hence it throws `Uncaught SyntaxError: Unexpected token )`.
+IIFE stands for Immediately Invoked Function Expressions, execute functions immediately, as soon as they are created. The JavaScript parser reads `function foo(){ }();` as `function foo(){ }` and `();`, where the former is a **function declaration** and the latter (a pair of parentheses) is an attempt at calling a function but there is no name specified, hence it throws `Uncaught SyntaxError: Unexpected token )`.
 
-Here are two ways to fix it that involves adding more parentheses: `(function foo(){ })()` and `(function foo(){ }())`. Statements that begin with `function` are considered to be _function declarations_; by wrapping this function within `()`, it becomes a _function expression_ which can then be executed with the subsequent `()`. These functions are not exposed in the global scope and you can even omit its name if you do not need to reference itself within the body.
-
-You might also use `void` operator: `void function foo(){ }();`. Unfortunately, there is one issue with such approach. The evaluation of given expression is always `undefined`, so if your IIFE function returns anything, you can't use it. An example:
-
-```js
-const foo = void (function bar() {
-  return 'foo';
-})();
-
-console.log(foo); // undefined
-```
-
+Here are two ways to fix it that involves adding more parentheses: `(function foo(){ })()` and `(function foo(){ }())`. Statements that begin with `function` are considered to be _function declarations_; by wrapping this function within `()`, it becomes a **function expression** which can then be executed with the subsequent `()`. These functions are not exposed in the global scope and you can even omit its name if you do not need to reference itself within the body.
 
 [[↑] Back to top](#table-of-contents)
 
