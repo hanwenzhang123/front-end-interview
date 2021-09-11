@@ -61,17 +61,141 @@ title: JavaScript Questions
 - [What is the difference between while and do-while loops in JavaScript?](#what-is-the-difference-between-while-and-do-while-loops-in-JavaScript)
 - [What is a promise? Where and how would you use promise?](#what-is-a-promise-where-and-how-would-you-use-promise)
 
+### Please explain to me the JS mechanism (how to handle the sync and async code)?
+
+The event loops behind the browser handles the sync and async JavaScript code, like when JS engine that built in the browser (for chrome is V8) runs JS code, because JS is a single threaded language, the code will be read line by line, and stores the memory in the heap, and push the function call to the call stack. If it is async function code, it will be then pushed to the web api instead to wait for the condition to be met while the call stack keeps running as first in last out and garbage collects the variables that are no longer in use. Once the async code in the web api is ready to run, it will then be pushed to the message queue. When there are no functions to run in the call stack, the Event Loop will take the first event from the queue and will push it to the Call Stack (as first in first out) to run. 
+
+[[↑] Back to top](#table-of-contents)
+
+### What is the difference between function declaration and function expression?
+
+The way to write both functions are different. A declared function is “saved for later use”, and will be executed later, when it is invoked (called).
+
+Function Declarations must begin with `function` like `function sayHello() { console.log(“hi”)};`, and when you need to run the function, you run it like `sayHello()` while the function expression saves the function to a variable like `const sayHello = function() {console.log(“hi”)};`, you would also declare this function like `sayHello()`
+
+Function declarations load before any code is executed while Function expressions load only when the interpreter reaches that line of code. Similar to the var statement, function declarations are hoisted to the top of other code. Function expressions aren’t hoisted, which allows them to retain a copy of the local variables from the scope where they were defined.
+
+Example: Function Expression
+```javascript
+alert(foo()); // ERROR! foo wasn't loaded yet
+var foo = function() { return 5; }
+```
+
+Example: Function Declaration
+```javascript
+alert(foo()); // Alerts 5. Declarations are loaded before any code can run.
+function foo() { return 5; }
+```
+
+Benefits of Function Expressions
+- As closures
+- As arguments to other functions
+- As Immediately Invoked Function Expressions (IIFE)
+
+[[↑] Back to top](#table-of-contents)
+
+### Let vs const vs var
+
+Three are for variable declaration. Let and const are the concepts being introduced in ES6. When you declare a variable that is final, not changeable, then you use const, when you declare a variable that you will change its value later on, then you use let. Var is an old syntax that was introduced before ES6 to declare variables, but you need to be careful of the hoisting issue. No matter where you put your var variable, it will exist in the JS code in it global object from the beginning, just not being defined for a value until the code being read, the variable itself just has no value until the var line being read,  whereas the variable will only exist when the code gets read when the variable declared by let and const.
+
+[[↑] Back to top](#table-of-contents)
+
+### List ES6 features you know
+
+- Let and const - (let const - scope to the block) (var - value hoisting - put things on the top, scope to the function)
+- Arrow function - (does not have "this", "arguments")
+- Template literals - (`..${}..`)
+- Rest operator - (...rest)
+- Spread operator - (...)
+- Destructuring
+- Default parameters 
+- Promise
+- Class syntax
+
+[[↑] Back to top](#table-of-contents)
+
+### What is the new keyword in the JS?
+
+- It creates a new object. The type of this object is simply object.
+- It sets this new object its internal, inaccessible, prototype property to be the constructor function's external, accessible, prototype object (every function object automatically has a prototype property).
+- It makes the this variable point to the newly created object.
+- It executes the constructor function, using the newly created object whenever this is mentioned.
+It returns the newly created object, unless the constructor function returns a non-null object reference. In this case, that object reference is returned instead.
+
+The Java new keyword is used to create an instance of the class. In other words, it instantiates a class by allocating memory for a new object and returning a reference to that memory. Like when you use class syntax to make a blueprint, whenever you use this blueprint to build something, then this new instance will be created by declaring through this new keyword
+
+[[↑] Back to top](#table-of-contents)
+
+### Function prototype methods, bind vs apply vs call?
+
+- Bind returns a new function, allowing you to pass in a this array and any number of arguments.
+- Call invokes the function and allows you to pass in arguments one by one.
+- Apply invokes the function and allows you to pass in arguments as an array.
+
+Call/apply call the function immediately, whereas bind returns a function that, when later executed, will have the correct context set for calling the original function. 
+
+apply/call attaches this into function and executes the function immediately
+```javascript
+var person1 = {firstName: 'Jon', lastName: 'Kuperman'};
+var person2 = {firstName: 'Kelly', lastName: 'King'};
+
+function say(greeting) {
+    console.log(greeting + ' ' + this.firstName + ' ' + this.lastName);
+}
+
+say.call(person1, 'Hello'); // Hello Jon Kuperman
+say.call(person2, 'Hello'); // Hello Kelly King
+```
+```javascript
+var person1 = {firstName: 'Jon', lastName: 'Kuperman'};
+var person2 = {firstName: 'Kelly', lastName: 'King'};
+
+function say(greeting) {
+    console.log(greeting + ' ' + this.firstName + ' ' + this.lastName);
+}
+
+say.apply(person1, ['Hello']); // Hello Jon Kuperman
+say.apply(person2, ['Hello']); // Hello Kelly King
+```
+
+bind attaches this into function and it needs to be invoked separately
+```javascript
+var person = {  
+  name: "James Smith",
+  hello: function(thing) {
+    console.log(this.name + " says hello " + thing);
+  }
+}
+
+person.hello("world");  // output: "James Smith says hello world"
+var helloFunc = person.hello.bind({ name: "Jim Smith" });
+helloFunc("world");  // output: Jim Smith says hello world"
+```
+```javascript
+var person1 = {firstName: 'Jon', lastName: 'Kuperman'};
+var person2 = {firstName: 'Kelly', lastName: 'King'};
+
+function say() {
+    console.log('Hello ' + this.firstName + ' ' + this.lastName);
+}
+
+var sayHelloJon = say.bind(person1);
+var sayHelloKelly = say.bind(person2);
+
+sayHelloJon(); // Hello Jon Kuperman
+sayHelloKelly(); // Hello Kelly King
+```
+
+bind() - referring to “this” object with a new function that is specifically made for “this”; however, it is not executing the function yet while apply() and call() will execute the function right away. Apply is for array in the arguments while call just with commas. 
+
+[[↑] Back to top](#table-of-contents)
+
 ### Explain event delegation
 
 Event delegation is a technique involving adding event listeners to a parent element instead of adding them to the descendant elements. The listener will fire whenever the event is triggered on the descendant elements due to event bubbling up the DOM. The benefits of this technique are:
 
 - Memory footprint goes down because only one single handler is needed on the parent element, rather than having to attach event handlers on each descendant.
 - There is no need to unbind the handler from elements that are removed and to bind the event for new elements.
-
-###### References
-
-- https://davidwalsh.name/event-delegate
-- https://stackoverflow.com/questions/1687296/what-is-dom-event-delegation
 
 [[↑] Back to top](#table-of-contents)
 
@@ -178,13 +302,6 @@ c.constructor.name;
 // Outputs: "Child"
 ```
 
-###### References
-
-- http://dmitrysoshnikov.com/ecmascript/javascript-the-core/
-- https://www.quora.com/What-is-prototypal-inheritance/answer/Kyle-Simpson
-- https://davidwalsh.name/javascript-objects
-- https://crockford.com/javascript/prototypal.html
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain
 
 [[↑] Back to top](#table-of-contents)
 
@@ -196,10 +313,6 @@ I find AMD syntax to be quite verbose and CommonJS is closer to the style you wo
 
 I'm glad that with ES2015 modules, that has support for both synchronous and asynchronous loading, we can finally just stick to one approach. Although it hasn't been fully rolled out in browsers and in Node, we can always use transpilers to convert our code.
 
-###### References
-
-- https://auth0.com/blog/javascript-module-systems-showdown/
-- https://stackoverflow.com/questions/16521471/relation-between-commonjs-amd-and-requirejs
 
 [[↑] Back to top](#table-of-contents)
 
@@ -219,10 +332,6 @@ const foo = void (function bar() {
 console.log(foo); // undefined
 ```
 
-###### References
-
-- http://lucybain.com/blog/2014/immediately-invoked-function-expression/
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void
 
 [[↑] Back to top](#table-of-contents)
 
@@ -266,10 +375,6 @@ console.log(foo == undefined); // true. Wrong, don't use this to check!
 
 As a personal habit, I never leave my variables undeclared or unassigned. I will explicitly assign `null` to them after declaring if I don't intend to use it yet. If you use a linter in your workflow, it will usually also be able to check that you are not referencing undeclared variables.
 
-###### References
-
-- https://stackoverflow.com/questions/15985875/effect-of-declared-and-undeclared-variables
-- https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
 [[↑] Back to top](#table-of-contents)
 
@@ -282,10 +387,6 @@ A closure is the combination of a function and the lexical environment within wh
 - Data privacy / emulating private methods with closures. Commonly used in the [module pattern](https://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript).
 - [Partial applications or currying](https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.l4b6l1i3x).
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
-- https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-closure-b2f0d2152b36
 
 [[↑] Back to top](#table-of-contents)
 
@@ -324,9 +425,7 @@ const doubled = a.map((num) => {
 
 The main difference between `.forEach` and `.map()` is that `.map()` returns a new array. If you need the result, but do not wish to mutate the original array, `.map()` is the clear choice. If you simply need to iterate over an array, `forEach` is a fine choice.
 
-###### References
 
-- https://codeburst.io/javascript-map-vs-foreach-f38111822c0f
 
 [[↑] Back to top](#table-of-contents)
 
@@ -358,10 +457,6 @@ const double = arr.map(function (el) {
 console.log(double); // [2, 4, 6]
 ```
 
-###### References
-
-- https://www.quora.com/What-is-a-typical-usecase-for-anonymous-functions
-- https://stackoverflow.com/questions/10273185/what-are-the-benefits-to-using-anonymous-functions-instead-of-named-functions-fo
 
 [[↑] Back to top](#table-of-contents)
 
@@ -381,9 +476,7 @@ Native objects are objects that are part of the JavaScript language defined by t
 
 Host objects are provided by the runtime environment (browser or Node), such as `window`, `XMLHTTPRequest`, etc.
 
-###### References
 
-- https://stackoverflow.com/questions/7614317/what-is-the-difference-between-native-objects-and-host-objects
 
 [[↑] Back to top](#table-of-contents)
 
@@ -409,9 +502,7 @@ console.log(person); // Person { name: "John" }
 console.log(person.name); // "john"
 ```
 
-###### References
 
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new
 
 [[↑] Back to top](#table-of-contents)
 
@@ -432,15 +523,12 @@ console.log(add.apply(null, [1, 2])); // 3
 
 ### Explain `Function.prototype.bind`.
 
-Taken word-for-word from [MDN](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_objects/Function/bind):
 
 > The `bind()` method creates a new function that, when called, has its `this` keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
 
 In my experience, it is most useful for binding the value of `this` in methods of classes that you want to pass into other functions. This is frequently done in React components.
 
-###### References
 
-- https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_objects/Function/bind
 
 [[↑] Back to top](#table-of-contents)
 
@@ -450,10 +538,6 @@ In my experience, it is most useful for binding the value of `this` in methods o
 
 There are some answers online that explain `document.write()` is being used in analytics code or [when you want to include styles that should only work if JavaScript is enabled](https://www.quirksmode.org/blog/archives/2005/06/three_javascrip_1.html). It is even being used in HTML5 boilerplate to [load scripts in parallel and preserve execution order](https://github.com/paulirish/html5-boilerplate/wiki/Script-Loading-Techniques#documentwrite-script-tag)! However, I suspect those reasons might be outdated and in the modern day, they can be achieved without using `document.write()`. Please do correct me if I'm wrong about this.
 
-###### References
-
-- https://www.quirksmode.org/blog/archives/2005/06/three_javascrip_1.html
-- https://github.com/h5bp/html5-boilerplate/wiki/Script-Loading-Techniques#documentwrite-script-tag
 
 [[↑] Back to top](#table-of-contents)
 
@@ -489,11 +573,7 @@ This is not really recommended. Feature detection is more foolproof.
 
 This is a browser-reported string that allows the network protocol peers to identify the application type, operating system, software vendor or software version of the requesting software user agent. It can be accessed via `navigator.userAgent`. However, the string is tricky to parse and can be spoofed. For example, Chrome reports both as Chrome and Safari. So to detect Safari you have to check for the Safari string and the absence of the Chrome string. Avoid this method.
 
-###### References
 
-- https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection
-- https://stackoverflow.com/questions/20104930/whats-the-difference-between-feature-detection-feature-inference-and-using-th
-- https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
 
 [[↑] Back to top](#table-of-contents)
 
@@ -503,10 +583,7 @@ Ajax (asynchronous JavaScript and XML) is a set of web development techniques us
 
 The `XMLHttpRequest` API is frequently used for the asynchronous communication or these days, the `fetch` API.
 
-###### References
 
-- https://en.wikipedia.org/wiki/Ajax_(programming)
-- https://developer.mozilla.org/en-US/docs/AJAX
 
 [[↑] Back to top](#table-of-contents)
 
@@ -555,11 +632,7 @@ The client has to have the `printData` function in its global scope and the func
 
 JSONP can be unsafe and has some security implications. As JSONP is really JavaScript, it can do everything else JavaScript can do, so you need to trust the provider of the JSONP data.
 
-These days, [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing) is the recommended approach and JSONP is seen as a hack.
 
-###### References
-
-- https://stackoverflow.com/a/2067584/1751946
 
 [[↑] Back to top](#table-of-contents)
 
@@ -617,10 +690,7 @@ var x = 'local';
 let y = 'local';
 ```
 
-###### References
 
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_Types#Variable_hoisting
-- https://stackoverflow.com/questions/31219420/are-variables-declared-with-let-or-const-not-hoisted-in-es6/31222689#31222689
 
 [[↑] Back to top](#table-of-contents)
 
@@ -647,9 +717,6 @@ console.log(input.getAttribute('value')); // Hello
 console.log(input.value); // Hello World!
 ```
 
-###### References
-
-- https://stackoverflow.com/questions/6003819/properties-and-attributes-in-html
 
 [[↑] Back to top](#table-of-contents)
 
@@ -659,9 +726,7 @@ Extending a built-in/native JavaScript object means adding properties/functions 
 
 The only time you may want to extend a native object is when you want to create a polyfill, essentially providing your own implementation for a method that is part of the JavaScript specification but might not exist in the user's browser due to it being an older browser.
 
-###### References
 
-- http://lucybain.com/blog/2014/js-extending-built-in-objects/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -671,10 +736,7 @@ The `DOMContentLoaded` event is fired when the initial HTML document has been co
 
 `window`'s `load` event is only fired after the DOM and all dependent resources and assets have loaded.
 
-###### References
 
-- https://developer.mozilla.org/en-US/docs/Web/Events/DOMContentLoaded
-- https://developer.mozilla.org/en-US/docs/Web/Events/load
 
 [[↑] Back to top](#table-of-contents)
 
@@ -699,9 +761,7 @@ console.log(a == null); // true
 console.log(a == undefined); // true
 ```
 
-###### References
 
-- https://stackoverflow.com/questions/359494/which-equals-operator-vs-should-be-used-in-javascript-comparisons
 
 [[↑] Back to top](#table-of-contents)
 
@@ -709,9 +769,7 @@ console.log(a == undefined); // true
 
 The same-origin policy prevents JavaScript from making requests across domain boundaries. An origin is defined as a combination of URI scheme, hostname, and port number. This policy prevents a malicious script on one page from obtaining access to sensitive data on another web page through that page's Document Object Model.
 
-###### References
 
-- https://en.wikipedia.org/wiki/Same-origin_policy
 
 [[↑] Back to top](#table-of-contents)
 
@@ -743,10 +801,6 @@ duplicate([1, 2, 3, 4, 5]); // [1,2,3,4,5,1,2,3,4,5]
 
 "Ternary" indicates three, and a ternary expression accepts three operands, the test condition, the "then" expression and the "else" expression. Ternary expressions are not specific to JavaScript and I'm not sure why it is even in this list.
 
-###### References
-
-- https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
-
 [[↑] Back to top](#table-of-contents)
 
 ### What is `"use strict";`? What are the advantages and disadvantages to using it?
@@ -771,10 +825,6 @@ Disadvantages:
 
 Overall, I think the benefits outweigh the disadvantages, and I never had to rely on the features that strict mode blocks. I would recommend using strict mode.
 
-###### References
-
-- http://2ality.com/2011/10/strict-mode-hatred.html
-- http://lucybain.com/blog/2014/js-use-strict/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -792,10 +842,6 @@ for (let i = 1; i <= 100; i++) {
 
 I would not advise you to write the above during interviews though. Just stick with the long but clear approach. For more wacky versions of FizzBuzz, check out the reference link below.
 
-###### References
-
-- https://gist.github.com/jaysonrowe/1592432
-
 [[↑] Back to top](#table-of-contents)
 
 ### Why is it, in general, a good idea to leave the global scope of a website as-is and never touch it?
@@ -811,10 +857,6 @@ The `load` event fires at the end of the document loading process. At this point
 The DOM event `DOMContentLoaded` will fire after the DOM for the page has been constructed, but do not wait for other resources to finish loading. This is preferred in certain cases when you do not need the full page to be loaded before initializing.
 
 TODO.
-
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onload
 
 [[↑] Back to top](#table-of-contents)
 
@@ -838,13 +880,6 @@ The downsides:
 - There's an additional step to be done on your server which is to configure it to route all requests to a single entry point and allow client-side routing to take over from there.
 - SPAs are reliant on JavaScript to render content, but not all search engines execute JavaScript during crawling, and they may see empty content on your page. This inadvertently hurts the Search Engine Optimization (SEO) of your app. However, most of the time, when you are building apps, SEO is not the most important factor, as not all the content needs to be indexable by search engines. To overcome this, you can either server-side render your app or use services such as [Prerender](https://prerender.io/) to "render your javascript in a browser, save the static HTML, and return that to the crawlers".
 
-###### References
-
-- https://github.com/grab/front-end-guide#single-page-apps-spas
-- http://stackoverflow.com/questions/21862054/single-page-app-advantages-and-disadvantages
-- http://blog.isquaredsoftware.com/presentations/2016-10-revolution-of-web-dev/
-- https://medium.freecodecamp.com/heres-why-client-side-rendering-won-46a349fadb52
-
 [[↑] Back to top](#table-of-contents)
 
 ### What is the extent of your experience with Promises and/or their polyfills?
@@ -852,10 +887,6 @@ The downsides:
 Possess working knowledge of it. A promise is an object that may produce a single value sometime in the future: either a resolved value or a reason that it's not resolved (e.g., a network error occurred). A promise may be in one of 3 possible states: fulfilled, rejected, or pending. Promise users can attach callbacks to handle the fulfilled value or the reason for rejection.
 
 Some common polyfills are `$.deferred`, Q and Bluebird but not all of them comply with the specification. ES2015 supports Promises out of the box and polyfills are typically not needed these days.
-
-###### References
-
-- https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-promise-27fc71e77261
 
 [[↑] Back to top](#table-of-contents)
 
@@ -877,10 +908,6 @@ Some common polyfills are `$.deferred`, Q and Bluebird but not all of them compl
 
 - Slightly more complex code (debatable).
 - In older browsers where ES2015 is not supported, you need to load a polyfill in order to use it.
-
-###### References
-
-- https://github.com/getify/You-Dont-Know-JS/blob/master/async%20%26%20performance/ch3.md
 
 [[↑] Back to top](#table-of-contents)
 
@@ -906,10 +933,6 @@ Disadvantages:
 
 Practically, ES2015 has vastly improved JavaScript and made it much nicer to write. I don't really see the need for CoffeeScript these days.
 
-###### References
-
-- https://softwareengineering.stackexchange.com/questions/72569/what-are-the-pros-and-cons-of-coffeescript
-
 [[↑] Back to top](#table-of-contents)
 
 ### What tools and techniques do you use for debugging JavaScript code?
@@ -923,11 +946,6 @@ Practically, ES2015 has vastly improved JavaScript and made it much nicer to wri
   - [Chrome Devtools](https://hackernoon.com/twelve-fancy-chrome-devtools-tips-dc1e39d10d9d)
   - `debugger` statement
   - Good old `console.log` debugging
-
-###### References
-
-- https://hackernoon.com/twelve-fancy-chrome-devtools-tips-dc1e39d10d9d
-- https://raygun.com/blog/javascript-debugging/
 
 [[↑] Back to top](#table-of-contents)
 
@@ -956,11 +974,6 @@ for (let [index, elem] of arr.entries()) {
   console.log(index, ': ', elem);
 }
 ```
-
-###### References
-
-- http://2ality.com/2015/08/getting-started-es6.html#from-for-to-foreach-to-for-of
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/entries
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1044,9 +1057,6 @@ Freezing an object does not allow new properties to be added to an object and pr
 - Allocation (and deallocation) of many small objects rather than modifying existing ones can cause a performance impact. The complexity of either the allocator or the garbage collector usually depends on the number of objects on the heap.
 - Cyclic data structures such as graphs are difficult to build. If you have two objects which can't be modified after initialization, how can you get them to point to each other?
 
-###### References
-
-- https://stackoverflow.com/questions/1863515/pros-cons-of-immutability-vs-mutability
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1069,12 +1079,6 @@ const john = {...human, name: 'John'}; // {race: "human", name: "John"}
 const alienJohn = {...john, race: 'alien'}; // {race: "alien", name: "John"}
 ```
 
-###### References
-
-- https://stackoverflow.com/questions/1863515/pros-cons-of-immutability-vs-mutability
-- https://www.sitepoint.com/immutability-javascript/
-- https://wecodetheweb.com/2016/02/12/immutable-javascript-using-es6-and-beyond/
-
 [[↑] Back to top](#table-of-contents)
 
 ### Explain the difference between synchronous and asynchronous functions.
@@ -1091,9 +1095,7 @@ The event loop is a single-threaded loop that monitors the call stack and checks
 
 If you haven't already checked out Philip Robert's [talk on the Event Loop](https://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html), you should. It is one of the most viewed videos on JavaScript.
 
-###### References
 
-- https://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1119,9 +1121,7 @@ var foo = function () {
 };
 ```
 
-###### References
 
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1199,12 +1199,6 @@ const baz = 'baz';
 baz = 'qux';
 ```
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/var
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const
-
 [[↑] Back to top](#table-of-contents)
 
 ### What are the differences between ES6 class and ES5 function constructors?
@@ -1252,11 +1246,6 @@ class Student extends Person {
 ```
 
 It's much more verbose to use inheritance in ES5 and the ES6 version is easier to understand and remember.
-
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Inheritance
-- https://eli.thegreenplace.net/2013/10/22/classical-inheritance-in-javascript-es5
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1308,10 +1297,7 @@ The main takeaway here is that `this` can be changed for a normal function, but 
 
 This can be particularly helpful in React class components. If you define a class method for something such as a click handler using a normal function, and then you pass that click handler down into a child component as a prop, you will need to also bind `this` in the constructor of the parent component. If you instead use an arrow function, there is no need to also bind "this", as the method will automatically get its "this" value from its enclosing lexical context. (See this article for an excellent demonstration and sample code: https://medium.com/@machnicki/handle-events-in-react-with-arrow-functions-ede88184bbb)
 
-###### References
 
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
-- https://medium.com/@machnicki/handle-events-in-react-with-arrow-functions-ede88184bbb
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1348,12 +1334,6 @@ const transformNamesToUppercase = function (names) {
 };
 transformNamesToUppercase(names); // ['IRISH', 'DAISY', 'ANNA']
 ```
-
-###### References
-
-- https://medium.com/javascript-scene/higher-order-functions-composing-software-5365cf2cbe99
-- https://hackernoon.com/effective-functional-javascript-first-class-and-higher-order-functions-713fde8df50a
-- https://eloquentjavascript.net/05_higher_order.html
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1394,10 +1374,6 @@ console.log(p); // 42
 console.log(q); // true
 ```
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
-- https://ponyfoo.com/articles/es6-destructuring-in-depth
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1462,9 +1438,6 @@ document.body.innerHTML = `
 
 **Note that your code may be susceptible to XSS by using `.innerHTML`. Sanitize your data before displaying it if it came from a user!**
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1499,10 +1472,6 @@ var addFive = curriedAdd(5);
 
 var result = [0, 1, 2, 3, 4, 5].map(addFive); // [5, 6, 7, 8, 9, 10]
 ```
-
-###### References
-
-- https://hackernoon.com/currying-in-js-d9ddc64f162e
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1544,11 +1513,6 @@ const {e, f, ...others} = {
 }; // e: 1, f: 2, others: { g: 3, h: 4 }
 ```
 
-###### References
-
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters
-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1564,19 +1528,10 @@ ES2015 defines a module syntax which aims to replace both AMD and CommonJS. This
 
 [[↑] Back to top](#table-of-contents)
 
-###### References
-
-- http://requirejs.org/docs/whyamd.html
-- https://nodejs.org/docs/latest/api/modules.html
-- http://2ality.com/2014/09/es6-modules-final.html
 
 ### Why you might want to create static class members?
 
 Static class members (properties/methods) are not tied to a specific instance of a class and have the same value regardless of which instance is referring to it. Static properties are typically configuration variables and static methods are usually pure utility functions which do not depend on the state of the instance.
-
-###### References
-
-- https://stackoverflow.com/questions/21155438/when-to-use-static-variables-methods-and-when-to-use-instance-variables-methods
 
 [[↑] Back to top](#table-of-contents)
 
