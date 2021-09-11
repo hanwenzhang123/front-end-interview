@@ -359,18 +359,29 @@ console.log(foo == undefined); // true. Wrong, don't use this to check!
 
 As a personal habit, I never leave my variables undeclared or unassigned. I will explicitly assign `null` to them after declaring if I don't intend to use it yet. If you use a linter in your workflow, it will usually also be able to check that you are not referencing undeclared variables.
 
-
 [[↑] Back to top](#table-of-contents)
 
 ### What is a closure, and how/why would you use one?
 
-A closure is the combination of a function and the lexical environment within which that function was declared. The word "lexical" refers to the fact that lexical scoping uses the location where a variable is declared within the source code to determine where that variable is available. Closures are functions that have access to the outer (enclosing) function's variables—scope chain even after the outer function has returned.
+A closure gives you access to an outer function’s scope from an inner function. A closure is the combination of a function and the lexical environment within which that function was declared. The word "lexical" refers to the fact that lexical scoping uses the location where a variable is declared within the source code to determine where that variable is available. Closures are functions that have access to the outer (enclosing) function's variables—scope chain even after the outer function has returned.
 
+```javascript
+function makeFunc() {
+  var name = 'Mozilla';
+  function displayName() {
+    alert(name);
+  }
+  return displayName;
+}
+
+var myFunc = makeFunc();
+myFunc();
+```
+    
 **Why would you use one?**
 
-- Data privacy / emulating private methods with closures. Commonly used in the [module pattern](https://addyosmani.com/resources/essentialjsdesignpatterns/book/#modulepatternjavascript).
+- Data privacy / emulating private methods with closures. Commonly used in the module pattern
 - [Partial applications or currying](https://medium.com/javascript-scene/curry-or-partial-application-8150044c78b8#.l4b6l1i3x).
-
 
 [[↑] Back to top](#table-of-contents)
 
@@ -409,8 +420,6 @@ const doubled = a.map((num) => {
 
 The main difference between `.forEach` and `.map()` is that `.map()` returns a new array. If you need the result, but do not wish to mutate the original array, `.map()` is the clear choice. If you simply need to iterate over an array, `forEach` is a fine choice.
 
-
-
 [[↑] Back to top](#table-of-contents)
 
 ### What's a typical use case for anonymous functions?
@@ -441,7 +450,6 @@ const double = arr.map(function (el) {
 console.log(double); // [2, 4, 6]
 ```
 
-
 [[↑] Back to top](#table-of-contents)
 
 ### How do you organize your code? (module pattern, classical inheritance?)
@@ -460,13 +468,11 @@ Native objects are objects that are part of the JavaScript language defined by t
 
 Host objects are provided by the runtime environment (browser or Node), such as `window`, `XMLHTTPRequest`, etc.
 
-
-
 [[↑] Back to top](#table-of-contents)
 
 ### Difference between: `function Person(){}`, `var person = Person()`, and `var person = new Person()`?
 
-This question is pretty vague. My best guess at its intention is that it is asking about constructors in JavaScript. Technically speaking, `function Person(){}` is just a normal function declaration. The convention is to use PascalCase for functions that are intended to be used as constructors.
+My best guess at its intention is that it is asking about constructors in JavaScript. Technically speaking, `function Person(){}` is just a normal function declaration. The convention is to use PascalCase for functions that are intended to be used as constructors.
 
 `var person = Person()` invokes the `Person` as a function, and not as a constructor. Invoking as such is a common mistake if the function is intended to be used as a constructor. Typically, the constructor does not return anything, hence invoking the constructor like a normal function will return `undefined` and that gets assigned to the variable intended as the instance.
 
@@ -485,9 +491,7 @@ var person = new Person('John');
 console.log(person); // Person { name: "John" }
 console.log(person.name); // "john"
 ```
-
-
-
+    
 [[↑] Back to top](#table-of-contents)
 
 ### What's the difference between `.call` and `.apply`?
@@ -507,21 +511,15 @@ console.log(add.apply(null, [1, 2])); // 3
 
 ### Explain `Function.prototype.bind`.
 
-
 > The `bind()` method creates a new function that, when called, has its `this` keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
 
-In my experience, it is most useful for binding the value of `this` in methods of classes that you want to pass into other functions. This is frequently done in React components.
-
-
-
+In my experience, it is most useful for binding the value of `this` in methods of classes that you want to pass into other functions. 
+    
 [[↑] Back to top](#table-of-contents)
 
 ### When would you use `document.write()`?
 
 `document.write()` writes a string of text to a document stream opened by `document.open()`. When `document.write()` is executed after the page has loaded, it will call `document.open` which clears the whole document (`<head>` and `<body>` removed!) and replaces the contents with the given parameter value. Hence it is usually considered dangerous and prone to misuse.
-
-There are some answers online that explain `document.write()` is being used in analytics code or [when you want to include styles that should only work if JavaScript is enabled](https://www.quirksmode.org/blog/archives/2005/06/three_javascrip_1.html). It is even being used in HTML5 boilerplate to [load scripts in parallel and preserve execution order](https://github.com/paulirish/html5-boilerplate/wiki/Script-Loading-Techniques#documentwrite-script-tag)! However, I suspect those reasons might be outdated and in the modern day, they can be achieved without using `document.write()`. Please do correct me if I'm wrong about this.
-
 
 [[↑] Back to top](#table-of-contents)
 
@@ -538,9 +536,7 @@ if ('geolocation' in navigator) {
   // Handle lack of feature
 }
 ```
-
-[Modernizr](https://modernizr.com/) is a great library to handle feature detection.
-
+    
 **Feature Inference**
 
 Feature inference checks for a feature just like feature detection, but uses another function because it assumes it will also exist, e.g.:
@@ -550,14 +546,10 @@ if (document.getElementsByTagName) {
   element = document.getElementById(id);
 }
 ```
-
-This is not really recommended. Feature detection is more foolproof.
-
+    
 **UA String**
 
 This is a browser-reported string that allows the network protocol peers to identify the application type, operating system, software vendor or software version of the requesting software user agent. It can be accessed via `navigator.userAgent`. However, the string is tricky to parse and can be spoofed. For example, Chrome reports both as Chrome and Safari. So to detect Safari you have to check for the Safari string and the absence of the Chrome string. Avoid this method.
-
-
 
 [[↑] Back to top](#table-of-contents)
 
@@ -616,19 +608,15 @@ The client has to have the `printData` function in its global scope and the func
 
 JSONP can be unsafe and has some security implications. As JSONP is really JavaScript, it can do everything else JavaScript can do, so you need to trust the provider of the JSONP data.
 
-
-
 [[↑] Back to top](#table-of-contents)
 
 ### Have you ever used JavaScript templating? If so, what libraries have you used?
 
-Yes. Handlebars, Underscore, Lodash, AngularJS, and JSX. I disliked templating in AngularJS because it made heavy use of strings in the directives and typos would go uncaught. JSX is my new favorite as it is closer to JavaScript and there is barely any syntax to learn. Nowadays, you can even use ES2015 template string literals as a quick way for creating templates without relying on third-party code.
+Yes. Lodash, AngularJS, and JSX. I disliked templating in AngularJS because it made heavy use of strings in the directives and typos would go uncaught. JSX is my new favorite as it is closer to JavaScript and there is barely any syntax to learn. Nowadays, you can even use ES2015 template string literals as a quick way for creating templates without relying on third-party code.
 
 ```js
 const template = `<div>My name is: ${name}</div>`;
 ```
-
-However, do be aware of a potential XSS in the above approach as the contents are not escaped for you, unlike in templating libraries.
 
 [[↑] Back to top](#table-of-contents)
 
@@ -636,7 +624,6 @@ However, do be aware of a potential XSS in the above approach as the contents ar
 
 Hoisting is a term used to explain the behavior of variable declarations in your code. Variables declared or initialized with the `var` keyword will have their declaration "moved" up to the top of their module/function-level scope, which we refer to as hoisting. However, only the declaration is hoisted, the assignment (if there is one), will stay where it is.
 
-Note that the declaration is not actually moved - the JavaScript engine parses the declarations during compilation and becomes aware of declarations and their scopes. It is just easier to understand this behavior by visualizing the declarations as being hoisted to the top of their scope. Let's explain with a few examples.
 
 ```js
 console.log(foo); // undefined
@@ -674,14 +661,20 @@ var x = 'local';
 let y = 'local';
 ```
 
-
-
 [[↑] Back to top](#table-of-contents)
 
 ### Describe event bubbling.
 
 When an event triggers on a DOM element, it will attempt to handle the event if there is a listener attached, then the event is bubbled up to its parent and the same thing happens. This bubbling occurs up the element's ancestors all the way to the `document`. Event bubbling is the mechanism behind event delegation.
 
+```js
+<form onclick="alert('form')">FORM
+  <div onclick="alert('div')">DIV
+    <p onclick="alert('p')">P</p>
+  </div>
+</form>
+```
+    
 [[↑] Back to top](#table-of-contents)
 
 ### What's the difference between an "attribute" and a "property"?
@@ -701,7 +694,6 @@ console.log(input.getAttribute('value')); // Hello
 console.log(input.value); // Hello World!
 ```
 
-
 [[↑] Back to top](#table-of-contents)
 
 ### Why is extending built-in JavaScript objects not a good idea?
@@ -710,8 +702,6 @@ Extending a built-in/native JavaScript object means adding properties/functions 
 
 The only time you may want to extend a native object is when you want to create a polyfill, essentially providing your own implementation for a method that is part of the JavaScript specification but might not exist in the user's browser due to it being an older browser.
 
-
-
 [[↑] Back to top](#table-of-contents)
 
 ### Difference between document `load` event and document `DOMContentLoaded` event?
@@ -719,8 +709,6 @@ The only time you may want to extend a native object is when you want to create 
 The `DOMContentLoaded` event is fired when the initial HTML document has been completely loaded and parsed, without waiting for stylesheets, images, and subframes to finish loading.
 
 `window`'s `load` event is only fired after the DOM and all dependent resources and assets have loaded.
-
-
 
 [[↑] Back to top](#table-of-contents)
 
@@ -744,16 +732,12 @@ var a = null;
 console.log(a == null); // true
 console.log(a == undefined); // true
 ```
-
-
-
+    
 [[↑] Back to top](#table-of-contents)
 
 ### Explain the same-origin policy with regards to JavaScript.
 
 The same-origin policy prevents JavaScript from making requests across domain boundaries. An origin is defined as a combination of URI scheme, hostname, and port number. This policy prevents a malicious script on one page from obtaining access to sensitive data on another web page through that page's Document Object Model.
-
-
 
 [[↑] Back to top](#table-of-contents)
 
