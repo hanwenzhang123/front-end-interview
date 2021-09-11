@@ -624,7 +624,6 @@ const template = `<div>My name is: ${name}</div>`;
 
 Hoisting is a term used to explain the behavior of variable declarations in your code. Variables declared or initialized with the `var` keyword will have their declaration "moved" up to the top of their module/function-level scope, which we refer to as hoisting. However, only the declaration is hoisted, the assignment (if there is one), will stay where it is.
 
-
 ```js
 console.log(foo); // undefined
 var foo = 1;
@@ -767,7 +766,12 @@ duplicate([1, 2, 3, 4, 5]); // [1,2,3,4,5,1,2,3,4,5]
 
 ### Why is it called a Ternary expression, what does the word "Ternary" indicate?
 
-"Ternary" indicates three, and a ternary expression accepts three operands, the test condition, the "then" expression and the "else" expression. Ternary expressions are not specific to JavaScript and I'm not sure why it is even in this list.
+"Ternary" indicates three, and a ternary expression accepts three operands, the test condition, the "then" expression and the "else" expression. 
+```js
+function getFee(isMember) {
+  return (isMember ? '$2.00' : '$10.00');
+}
+```
 
 [[↑] Back to top](#table-of-contents)
 
@@ -793,12 +797,9 @@ Disadvantages:
 
 Overall, I think the benefits outweigh the disadvantages, and I never had to rely on the features that strict mode blocks. I would recommend using strict mode.
 
-
 [[↑] Back to top](#table-of-contents)
 
 ### Create a for loop that iterates up to `100` while outputting **"fizz"** at multiples of `3`, **"buzz"** at multiples of `5` and **"fizzbuzz"** at multiples of `3` and `5`.
-
-Check out this version of FizzBuzz by [Paul Irish](https://gist.github.com/jaysonrowe/1592432#gistcomment-790724).
 
 ```js
 for (let i = 1; i <= 100; i++) {
@@ -806,9 +807,18 @@ for (let i = 1; i <= 100; i++) {
     b = i % 5 == 0;
   console.log(f ? (b ? 'FizzBuzz' : 'Fizz') : b ? 'Buzz' : i);
 }
+                        
+for (var i=1; i <= 100; i++) {
+    if (i % 3 == 0 && i % 5 == 0)
+        console.log("FizzBuzz");
+    else if (i % 3 == 0)
+        console.log("Fizz");
+    else if (i % 5 == 0)
+        console.log("Buzz");
+    else
+        console.log(i);
+}
 ```
-
-I would not advise you to write the above during interviews though. Just stick with the long but clear approach. For more wacky versions of FizzBuzz, check out the reference link below.
 
 [[↑] Back to top](#table-of-contents)
 
@@ -824,13 +834,9 @@ The `load` event fires at the end of the document loading process. At this point
 
 The DOM event `DOMContentLoaded` will fire after the DOM for the page has been constructed, but do not wait for other resources to finish loading. This is preferred in certain cases when you do not need the full page to be loaded before initializing.
 
-TODO.
-
 [[↑] Back to top](#table-of-contents)
 
 ### Explain what a single page app is and how to make one SEO-friendly.
-
-The below is taken from the awesome [Grab Front End Guide](https://github.com/grab/front-end-guide), which coincidentally, is written by me!
 
 Web developers these days refer to the products they build as web apps, rather than websites. While there is no strict difference between the two terms, web apps tend to be highly interactive and dynamic, allowing the user to perform actions and receive a response to their action. Traditionally, the browser receives HTML from the server and renders it. When the user navigates to another URL, a full-page refresh is required and the server sends fresh new HTML to the new page. This is called server-side rendering.
 
@@ -853,6 +859,34 @@ The downsides:
 ### What is the extent of your experience with Promises and/or their polyfills?
 
 Possess working knowledge of it. A promise is an object that may produce a single value sometime in the future: either a resolved value or a reason that it's not resolved (e.g., a network error occurred). A promise may be in one of 3 possible states: fulfilled, rejected, or pending. Promise users can attach callbacks to handle the fulfilled value or the reason for rejection.
+    
+```js
+const myPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve('foo');
+  }, 300);
+});
+
+myPromise
+  .then(handleResolvedA, handleRejectedA)
+  .then(handleResolvedB, handleRejectedB)
+  .then(handleResolvedC, handleRejectedC);
+```
+    
+```js
+let myPromise = new Promise(function(myResolve, myReject) {
+// "Producing Code" (May take some time)
+
+  myResolve(); // when successful
+  myReject();  // when error
+});
+
+// "Consuming Code" (Must wait for a fulfilled Promise)
+myPromise.then(
+  function(value) { /* code if successful */ },
+  function(error) { /* code if some error */ }
+);
+```
 
 Some common polyfills are `$.deferred`, Q and Bluebird but not all of them comply with the specification. ES2015 supports Promises out of the box and polyfills are typically not needed these days.
 
@@ -1061,15 +1095,11 @@ Asynchronous functions usually accept a callback as a parameter and execution co
 
 The event loop is a single-threaded loop that monitors the call stack and checks if there is any work to be done in the task queue. If the call stack is empty and there are callback functions in the task queue, a function is dequeued and pushed onto the call stack to be executed.
 
-If you haven't already checked out Philip Robert's [talk on the Event Loop](https://2014.jsconf.eu/speakers/philip-roberts-what-the-heck-is-the-event-loop-anyway.html), you should. It is one of the most viewed videos on JavaScript.
-
-
-
 [[↑] Back to top](#table-of-contents)
 
 ### Explain the differences on the usage of `foo` between `function foo() {}` and `var foo = function() {}`
 
-The former is a function declaration while the latter is a function expression. The key difference is that function declarations have its body hoisted but the bodies of function expressions are not (they have the same hoisting behavior as variables). For more explanation on hoisting, refer to the question above [on hoisting](#explain-hoisting). If you try to invoke a function expression before it is defined, you will get an `Uncaught TypeError: XXX is not a function` error.
+The former is a function declaration while the latter is a function expression. The key difference is that function declarations have its body hoisted but the bodies of function expressions are not (they have the same hoisting behavior as variables). If you try to invoke a function expression before it is defined, you will get an `Uncaught TypeError: XXX is not a function` error.
 
 **Function Declaration**
 
@@ -1088,8 +1118,6 @@ var foo = function () {
   console.log('FOOOOO');
 };
 ```
-
-
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1171,8 +1199,6 @@ baz = 'qux';
 
 ### What are the differences between ES6 class and ES5 function constructors?
 
-Let's first look at example of each:
-
 ```js
 // ES5 Function Constructor
 function Person(name) {
@@ -1212,8 +1238,6 @@ class Student extends Person {
   }
 }
 ```
-
-It's much more verbose to use inheritance in ES5 and the ES6 version is easier to understand and remember.
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1264,8 +1288,6 @@ sayNameFromWindow2(); // John
 The main takeaway here is that `this` can be changed for a normal function, but the context always stays the same for an arrow function. So even if you are passing around your arrow function to different parts of your application, you wouldn't have to worry about the context changing.
 
 This can be particularly helpful in React class components. If you define a class method for something such as a click handler using a normal function, and then you pass that click handler down into a child component as a prop, you will need to also bind `this` in the constructor of the parent component. If you instead use an arrow function, there is no need to also bind "this", as the method will automatically get its "this" value from its enclosing lexical context. (See this article for an excellent demonstration and sample code: https://medium.com/@machnicki/handle-events-in-react-with-arrow-functions-ede88184bbb)
-
-
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1341,8 +1363,7 @@ const {p, q} = o;
 console.log(p); // 42
 console.log(q); // true
 ```
-
-
+    
 [[↑] Back to top](#table-of-contents)
 
 ### ES6 Template Literals offer a lot of flexibility in generating strings, can you give an example?
@@ -1405,7 +1426,6 @@ document.body.innerHTML = `
 ```
 
 **Note that your code may be susceptible to XSS by using `.innerHTML`. Sanitize your data before displaying it if it came from a user!**
-
 
 [[↑] Back to top](#table-of-contents)
 
@@ -1480,8 +1500,7 @@ const {e, f, ...others} = {
   h: 4,
 }; // e: 1, f: 2, others: { g: 3, h: 4 }
 ```
-
-
+    
 [[↑] Back to top](#table-of-contents)
 
 ### How can you share code between files?
