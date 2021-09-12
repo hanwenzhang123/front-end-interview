@@ -207,9 +207,9 @@ var x = 23;
 (function(){
   var x = 43;
   (function random(){
-    x++;
-    console.log(x);
-    var x = 21;
+    x++;  // x is not a number since it is not initialized yet
+    console.log(x);   //Output NaN
+    var x = 21; // Initialization of x, x is hoisted
   })();
 })();
 ```
@@ -217,7 +217,6 @@ var x = 23;
 Question: Guess the output of the following code:
 ```javascript
 // Code 1
-
   let hero = {
     powerLevel: 99,
     getPower(){
@@ -228,25 +227,22 @@ Question: Guess the output of the following code:
   let getPower = hero.getPower;
   
   let hero2 = {powerLevel:42};
-  console.log(getPower());
-  console.log(getPower.apply(hero2));
-  
-  
+  console.log(getPower());    //undefined - when the function is invoked, it is invoked referencing the global object: window.getPower() = getPower();
+  console.log(getPower.apply(hero2));   //42
   
   // Code 2
-  
   const a = function(){
-    console.log(this);
+    console.log(this);  //Window
   
     const b = {
       func1: function(){
-        console.log(this);
+        console.log(this);  //func1
       }  
     }
   
     const c = {
       func2: ()=>{
-        console.log(this);
+        console.log(this);  //Window
       }
     }
   
@@ -255,19 +251,16 @@ Question: Guess the output of the following code:
   }
   
   a();
-  
-  
-  
+
   // Code 3
-  
   const b = {
     name:"Vivek",
     f: function(){
       var self = this;
-      console.log(this.name);
+      console.log(this.name);   //"Vivek"
       (function(){
-        console.log(this.name);
-        console.log(self.name);
+        console.log(this.name); //undefined - this keyword refers to the global/window object in the IIFE 
+        console.log(self.name); //"Vivek"
       })();
     }
   }
