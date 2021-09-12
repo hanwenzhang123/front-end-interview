@@ -17,11 +17,11 @@ Question: How would you make this work?
 add(2, 5); // 7
 add(2)(5); // 7
 
-var add = function(x) {
-    return function(y) { 
-    return x + y; 
-    };
-}
+//var add = function(x) {       //currying
+//    return function(y) { 
+//    return x + y; 
+//    };
+//}
 ```
 
 Question: What value is returned from the following statement?
