@@ -292,13 +292,14 @@ function bigFunc(element){
 console.log(bigFunc(599)); // Array is created
 console.log(bigFunc(670)); // Array is created again
 
-//function bigFunc(){
-//  let newArray = new Array(700).fill('♥');
-//  return (element) => newArray[element];
-//}
-//let getElement = bigFunc(); // Array is created only once
-//getElement(599);
-//getElement(670);  
+//Solution
+function bigFunc(){
+  let newArray = new Array(700).fill('♥');
+  return (element) => newArray[element];
+}
+let getElement = bigFunc(); // Array is created only once
+getElement(599);
+getElement(670);  
 
 // Code 3
 // The following code outputs 2 and 2 after waiting for one second
@@ -313,22 +314,22 @@ function randomFunc(){
 randomFunc();
 
 //Using let keyword:
-//function randomFunc(){
-//  for(let i = 0; i < 2; i++){
-//    setTimeout(()=> console.log(i),1000);
-//  }
-//}
-//randomFunc();
+function randomFunc(){
+  for(let i = 0; i < 2; i++){
+    setTimeout(()=> console.log(i),1000);
+  }
+}
+randomFunc();
 
 //Using closure:
-//function randomFunc(){
-//  for(var i = 0; i < 2; i++){
-//  (function(i){
-//      setTimeout(()=>console.log(i),1000);
-//    })(i);
-//  }
-//}
-//randomFunc();  
+function randomFunc(){
+  for(var i = 0; i < 2; i++){
+  (function(i){
+      setTimeout(()=>console.log(i),1000);
+    })(i);
+  }
+}
+randomFunc();  
 ```
 
 Question: Write a function that performs binary search on a sorted array.
