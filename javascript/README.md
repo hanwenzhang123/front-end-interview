@@ -65,6 +65,7 @@ title: JavaScript Questions
 - [Why you might want to create static class members?](#why-you-might-want-to-create-static-class-members)
 - [What is the difference between while and do-while loops in JavaScript?](#what-is-the-difference-between-while-and-do-while-loops-in-JavaScript)
 - [What is a promise? Where and how would you use promise?](#what-is-a-promise-where-and-how-would-you-use-promise)
+- [main thread vs micro vs macro in promise](#main-thread-vs-micro-vs-macro-in-promise)
 
 ### Please explain to me the JS mechanism (how to handle the sync and async code)?
 
@@ -199,7 +200,7 @@ bind() - referring to “this” object with a new function that is specifically
 
 Event delegation allows you to avoid adding event listeners to specific nodes; instead, the event listener is added to one parent - (Adding a listener on the next higher element instead of every child element itself)
 That event listener analyzes bubbled events to find a match on child elements.
-Instead of attaching the event listeners directly to the buttons, you delegate listening to the parent <div id="buttons"> . 
+Instead of attaching the event listeners directly to the buttons, you delegate listening to the parent `<div id="buttons">` . 
 When a button is clicked, the listener of the parent element catches the bubbling event (event propagation - capture, target, bubble).
 
 Event delegation is a technique involving adding event listeners to a parent element instead of adding them to the descendant elements. The listener will fire whenever the event is triggered on the descendant elements due to event bubbling up the DOM. The benefits of this technique are:
@@ -1292,20 +1293,16 @@ This can be particularly helpful in React class components. If you define a clas
 [[↑] Back to top](#table-of-contents)
 
 ### What is the definition of a higher-order function?
+    
+Higher order functions are functions that operate on other functions, either by taking them as arguments or by returning them. In simple words, A Higher-Order function is a function that receives a function as an argument or returns the function as output.
 
 A higher-order function is any function that takes one or more functions as arguments, which it uses to operate on some data, and/or returns a function as a result. Higher-order functions are meant to abstract some operation that is performed repeatedly. The classic example of this is `map`, which takes an array and a function as arguments. `map` then uses this function to transform each item in the array, returning a new array with the transformed data. Other popular examples in JavaScript are `forEach`, `filter`, and `reduce`. A higher-order function doesn't just need to be manipulating arrays as there are many use cases for returning a function from another function. `Function.prototype.bind` is one such example in JavaScript.
 
 **Map**
 
-Let say we have an array of names which we need to transform each string to uppercase.
-
 ```js
 const names = ['irish', 'daisy', 'anna'];
-```
 
-The imperative way will be as such:
-
-```js
 const transformNamesToUppercase = function (names) {
   const results = [];
   for (let i = 0; i < names.length; i++) {
@@ -1425,40 +1422,39 @@ document.body.innerHTML = `
 `;
 ```
 
-**Note that your code may be susceptible to XSS by using `.innerHTML`. Sanitize your data before displaying it if it came from a user!**
-
 [[↑] Back to top](#table-of-contents)
 
 ### Can you give an example of a curry function and why this syntax offers an advantage?
 
+Currying is a technique of evaluating function with multiple arguments, into sequence of functions with single argument.In other words, when a function, instead of taking all arguments at one time, takes the first one and return a new function that takes the second one and returns a new function which takes the third one, and so forth, until all arguments have been fulfilled.
+    
 Currying is a pattern where a function with more than one parameter is broken into multiple functions that, when called in series, will accumulate all of the required parameters one at a time. This technique can be useful for making code written in a functional style easier to read and compose. It's important to note that for a function to be curried, it needs to start out as one function, then broken out into a sequence of functions that each accepts one parameter.
 
 ```js
-function curry(fn) {
-  if (fn.length === 0) {
-    return fn;
-  }
-
-  function _curried(depth, args) {
-    return function (newArgument) {
-      if (depth - 1 === 0) {
-        return fn(...args, newArgument);
-      }
-      return _curried(depth - 1, [...args, newArgument]);
+function curry(f) { // curry(f) does the currying transform
+  return function(a) {
+    return function(b) {
+      return f(a, b);
     };
-  }
-
-  return _curried(fn.length, []);
+  };
 }
-
-function add(a, b) {
+// usage
+function sum(a, b) {
   return a + b;
 }
 
-var curriedAdd = curry(add);
-var addFive = curriedAdd(5);
+let curriedSum = curry(sum);
 
-var result = [0, 1, 2, 3, 4, 5].map(addFive); // [5, 6, 7, 8, 9, 10]
+alert( curriedSum(1)(2) ); // 3
+    
+function sum(a, b) {
+  return a + b;
+}
+
+let curriedSum = _.curry(sum); // using _.curry from lodash library
+
+alert( curriedSum(1, 2) ); // 3, still callable normally
+alert( curriedSum(1)(2) ); // 3, called partially
 ```
 
 [[↑] Back to top](#table-of-contents)
@@ -1523,9 +1519,104 @@ Static class members (properties/methods) are not tied to a specific instance of
 [[↑] Back to top](#table-of-contents)
 
 ### What is the difference between while and do-while loops in JavaScript?
+    
+In While loop, the condition tested at the beginning of the loop, and if the condition is True, statements inside the loop will execute. It means the While loop executes the code block only if the condition is True.
+    
+At the end of the loop, the Do While loop tests the condition. So, Do While executes the statements in the code block at least once even if the condition Fails.
 
 [[↑] Back to top](#table-of-contents)
 
 ### What is a promise? Where and how would you use promise?
+    
+A promise is an object that may produce a single value some time in the future : either a resolved value, or a reason that it's not resolved (e.g., a network error occurred). A promise may be in one of 3 possible states: fulfilled, rejected, or pending.
+
+```js
+function getData(dataItems) {
+    return new Promise((resolve, reject) => {
+        try {
+            setTimeout(() => {
+                resolve(dataItems)
+            }, 3000);
+        }
+        catch (error) {
+            reject(console.log(error))
+        }
+    })
+}
+getData(names).then(data=>{
+    let newName = 'Han Yoo Joo'
+    data.push(newName)
+    return data
+}).then(finalData=>{
+    console.log(finalData)
+})
+```
+```js
+new Promise((resolve, reject) => {
+  throw new Error("error");
+})
+  .finally(() => alert("Promise ready"))
+  .catch(err => alert(err));  // <-- .catch handles the error object
+```
+
+[[↑] Back to top](#table-of-contents)
+                                     
+### main thread vs micro vs macro in promise
+                                     
+`main thread (console.log) > micro (promise, async) > macro (timeout, interval)`
+
+```js
+//Question 1
+const myPromise = new Promise(res => res('Promise!'));
+
+function funcOne() {
+  myPromise.then(res => res).then(res => console.log(res)); // microtask
+  setTimeout(() => console.log('Timeout!'), 0); // macrotask
+  console.log('Last line!'); // main thread
+}
+
+funcOne();
+
+//Output:
+Last Line
+Promise
+Timeout
+```
+    
+async await == promise
+async always goes before await
+async function myPro() {
+  const res = await myPromise   //pauses after await - after await everything can be treated as .then() in promise - Microtask
+  console.log(res);
+}
+V.S. 
+myPromise.then(res => console.log(res))   //same as above
+
+```js
+//Question 2
+const myPromise = new Promise(res => res('Promise!'));
+function funcOne() {
+  myPromise.then(res => res).then(res => console.log(res, 1)); // microtask
+  setTimeout(() => console.log('Timeout! 1'), 0); // macrotask
+  console.log('Last line! 1'); // main thread
+}
+
+async function funcTwo() {
+  const res = await myPromise; // pauses
+  console.log(res, 2);
+  setTimeout(() => console.log('Timeout! 2'), 0);
+  console.log('Last line! 2');
+}
+funcOne();
+funcTwo();
+
+//Output:
+Last Line 1
+Promise 1
+Promise 2
+Last Line 2
+Timeout 1
+Timeout 2
+```
 
 [[↑] Back to top](#table-of-contents)
