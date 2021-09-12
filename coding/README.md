@@ -143,11 +143,11 @@ func1();    //2, 12
 // Code 2:
 function func2(){
   for(var i = 0; i < 3; i++){   //the variable i is incremented first and then checked 
-    setTimeout(()=> console.log(i),2000); // var keyword does not have block scope, only function scope
+    setTimeout(()=> console.log(i),2000); //var keyword does not have block scope, only function scope
   }
 }
 
-func2();    //3
+func2();    //3 3 3
 
 // Code 2:
 function func2(){
@@ -271,7 +271,6 @@ Question: Guess the output of the following code:
 Question: Guess the output of the following code:
 ```javascript
 // Code 1
-
 (function(a){
   return (function(){
     console.log(a);
@@ -279,9 +278,9 @@ Question: Guess the output of the following code:
   })()
 })(45);
 
+//45 - Even though a is defined in the outer function, due to closure the inner functions have access to it.
 
 // Code 2
-
 // Each time bigFunc is called, an array of size 700 is being created,
 // Modify the code so that we don't create the same array again and again
 
@@ -293,20 +292,43 @@ function bigFunc(element){
 console.log(bigFunc(599)); // Array is created
 console.log(bigFunc(670)); // Array is created again
 
-
+//function bigFunc(){
+//  let newArray = new Array(700).fill('♥');
+//  return (element) => newArray[element];
+//}
+//let getElement = bigFunc(); // Array is created only once
+//getElement(599);
+//getElement(670);  
 
 // Code 3
-
 // The following code outputs 2 and 2 after waiting for one second
 // Modify the code to output 0 and 1 after one second.
 
 function randomFunc(){
-  for(var i = 0; i < 2; i++){
+  for(var i = 0; i < 2; i++){ 
     setTimeout(()=> console.log(i),1000);
   }
 }
 
 randomFunc();
+
+//Using let keyword:
+//function randomFunc(){
+//  for(let i = 0; i < 2; i++){
+//    setTimeout(()=> console.log(i),1000);
+//  }
+//}
+//randomFunc();
+
+//Using closure:
+//function randomFunc(){
+//  for(var i = 0; i < 2; i++){
+//  (function(i){
+//      setTimeout(()=>console.log(i),1000);
+//    })(i);
+//  }
+//}
+//randomFunc();  
 ```
 
 Question: Write a function that performs binary search on a sorted array.
