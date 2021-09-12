@@ -534,56 +534,736 @@ x()   // Returns "Do something"
 
 ### Explain “this” keyword.
 
+__The “this” keyword refers to the object that the function is a property of. __
+The value of “this” keyword will always depend on the object that is invoking the function.
+
+```js
+//example
+function doSomething() {
+  console.log(this);
+}
+        
+doSomething();      //window
+
+//example2
+var obj = {
+    name:  "vivek",
+    getName: function(){
+    console.log(this.name);
+  }
+}
+        
+obj.getName();      //vivek
+
+var getName = obj.getName;
+var obj2 = {name:"akshay", getName };
+obj2.getName();     //akshay
+
+//example3
+var obj1 = {
+    address : "Mumbai,India",
+    getAddress: function(){
+    console.log(this.address); 
+  }
+}
+       
+var getAddress = obj1.getAddress;
+var obj2 = {name:"akshay"};
+obj2.getAddress();    //error - this keyword refers to the object obj2 , obj2 does not have the property “address”‘, hence the getAddress function throws an error.
+```
+
 [[↑] Back to top](#table-of-contents)
 
 ### Explain call(), apply() and, bind() methods.
+
+__call()__
+
+It’s a predefined method in javascript. This method invokes a method (function) by specifying the owner object.
+
+```js
+function sayHello(){
+  return "Hello " + this.name;
+}
+        
+var obj = {name: "Sandy"};
+        
+sayHello.call(obj);
+        
+// Returns "Hello Sandy"
+```
+
+call() method allows an object to use the method (function) of another object.
+
+```js
+var person = {
+  age: 23,
+  getAge: function(){
+    return this.age;
+  }
+}
+        
+var person2 = {age:  54};
+person.getAge.call(person2);
+        
+// Returns 54  
+```
+
+call() accepts arguments:
+
+```js
+function saySomething(message){
+  return this.name + " is " + message;
+}
+        
+var person4 = {name:  "John"};
+        
+saySomething.call(person4, "awesome");
+// Returns "John is awesome"    
+```
+
+__apply()__
+
+The apply method is similar to the call() method. The only difference is that,
+
+call() method takes arguments separately whereas, apply() method takes arguments as an array.
+
+```js
+function saySomething(message){
+  return this.name + " is " + message;
+}
+        
+var person4 = {name:  "John"};
+        
+saySomething.apply(person4, ["awesome"]);
+```
+
+__bind()__
+
+This method returns a new function, where the value of “this” skeyword will be bound to the owner object, which is provided as a parameter.
+
+Example with arguments:
+
+```js
+var bikeDetails = {
+    displayDetails: function(registrationNumber,brandName){
+    return this.name+ " , "+ "bike details: "+ registrationNumber + " , " + brandName;
+  }
+}
+        
+var person1 = {name:  "Vivek"};
+        
+var detailsOfPerson1 = bikeDetails.displayDetails.bind(person1, "TS0122", "Bullet");    // Binds the displayDetails function to the person1 object
+        
+detailsOfPerson1();     // Returns Vivek, bike details: TS0452, Thunderbird
+```
 
 [[↑] Back to top](#table-of-contents)
 
 ### What is Currying in javascript?
 
+Currying is a technique to transform a function of arguments n, to n functions of one or less arguments. By using the currying technique, we do not change the functionality of a function, we just change the way it is invoked. Example of a curried function:
+
+```js
+function multiply(a,b){
+  return a*b;
+}
+
+function currying(fn){
+  return function(a){
+    return function(b){
+      return fn(a,b);
+    }
+  }
+}
+
+var curriedMultiply = currying(multiply);
+
+multiply(4, 3); // Returns 12
+
+curriedMultiply(4)(3); // Also returns 12
+```
+
+As one can see in the code above, we have transformed the function multiply(a,b) to a function curriedMultiply , which takes in one parameter at a time.
+
 [[↑] Back to top](#table-of-contents)
 
 ### Explain Scope and Scope Chain in javascript.
+
+Scope in JS, determines the accessibility of variables and functions at various parts in one’s code.
+
+In general terms, the scope will let us know at a given part of code, what are the variables and functions that we can or cannot access.
+
+There are three types of scopes in JS:
+- Global Scope -  all the variables and functions having global scope can be accessed from anywhere inside the code
+- Local or Function Scope - all the variables and functions declared inside a function, can be accessed from within the function and not outside of it.
+- Block Scope - any variable declared inside a block { }, can be accessed only inside that block and cannot be accessed outside of it. variables declared using let and const.
+
+```js
+//Global
+var globalVariable = "Hello world";
+
+function sendMessage(){
+  return globalVariable; // can access globalVariable since it's written in global space
+}
+
+function sendMessage2(){
+  return sendMessage(); // Can access sendMessage function since it's written in global space
+}
+
+sendMessage2();  // Returns “Hello world”
+
+
+//Local or Function Scope
+function awesomeFunction(){
+  var a = 2;
+
+  return function(){
+    console.log(a*2); // Can access variable "a" since a and multiplyBy2 both are written inside the same function
+  }
+}
+console.log(a); // Throws reference error since a is written in local scope and cannot be accessed outside
+
+multiplyBy2(); // Throws reference error since multiplyBy2 is written in local scope
+
+
+//Block Scope
+{
+  let x = 45;
+}
+
+console.log(x); // Gives reference error since x cannot be accessed outside of the block
+
+for(let i=0; i<2; i++){
+  // do something
+}
+
+console.log(i); // Gives reference error since i cannot be accessed outside of the for loop block
+```
+
+Scope Chain
+
+JavaScript engine also uses Scope to find variables.
+
+```js
+var y = 24;
+
+function favFunction(){
+  var x = 667;
+  var anotherFavFunction = function(){
+    console.log(x); // Does not find x inside anotherFavFunction, so looks for variable inside favFunction, outputs 667
+  }
+
+  var yetAnotherFavFunction = function(){
+    console.log(y); // Does not find y inside yetAnotherFavFunction, so looks for variable inside favFunction and does not find it, so looks for variable in global scope, finds it and outputs 24
+  }
+
+  anotherFavFunction();
+  yetAnotherFavFunction();
+}
+
+
+favFunction();
+```
+As you can see in the code above, if the javascript engine does not find the variable in local scope, it tries to check for the variable in the outer scope. If the variable does not exist in the outer scope, it tries to find the variable in the global scope.
+
 [[↑] Back to top](#table-of-contents)
 
 ### Explain Closures in JavaScript.
+
+Closures is an ability of a function to remember the variables and functions that are declared in its outer scope.
+
+```js
+var Person = function(pName){
+  var name = pName;
+
+  this.getName = function(){
+    return name;
+  }
+}
+
+var person = new Person("Neelesh");
+console.log(person.getName());      //Neelesh
+```
+
+__This ability of a function to store a variable for further reference even after it is executed, is called Closure.__
+
+At code example below, instead of destroying the value of obj1 after execution, saves the value in the memory for further reference. This is the reason why the returning function is able to use the variable declared in the outer scope even after the function is already executed.
+
+```js
+function randomFunc(){
+  var obj1 = {name:"Vivian", age:45};
+
+  return function(){
+    console.log(obj1.name + " is "+ "awesome"); // Has access to obj1 even when the randomFunc function is executed
+
+  }
+}
+
+var initialiseClosure = randomFunc(); // Returns a function
+
+initialiseClosure();    //returned function is then executed
+```
+
 [[↑] Back to top](#table-of-contents)
 
 ### What are object prototypes?
+
+All javascript objects inherit properties from a prototype. A prototype is a blueprint of an object. Prototype allows us to use properties and methods on an object even if the properties and methods do not exist on the current object. Like .push(), Math.random(), etc.
+
+The javascript engine sees that the method push does not exist on the current array object and therefore, looks for the method push inside the Array prototype and it finds the method. Whenever the property or method is not found on the current object, the javascript engine will always try to look in its prototype and if it still does not exist, it looks inside the prototype's prototype and so on.
+
+For example,
+- Date objects inherit properties from the Date prototype
+- Math objects inherit properties from the Math prototype
+- Array objects inherit properties from the Array prototype.
+
+On top of the chain is `Object.prototype`. Every prototype inherits properties and methods from the Object.prototype.
+
 [[↑] Back to top](#table-of-contents)
 
 ### What are callbacks?
+
+A callback is a function that will be executed after another function gets executed. Functions that are used as an argument to another function are called callback functions.
+
+In javascript, functions are treated as first-class citizens, they can be used as an argument of another function, can be returned by another function and can be used as a property of an object.
+
+```js
+function divideByHalf(sum){
+  console.log(Math.floor(sum / 2));
+}
+
+function multiplyBy2(sum){
+  console.log(sum * 2);
+}
+
+function operationOnSum(num1,num2,operation){
+  var sum = num1 + num2;
+  operation(sum);
+}
+
+operationOnSum(3, 3, divideByHalf); // Outputs 3
+
+operationOnSum(5, 5, multiplyBy2); // Outputs 20
+```
+
 [[↑] Back to top](#table-of-contents)
 
 ### What is memoization?
+
+Memoization is a form of caching where the return value of a function is cached based on its parameters. If the parameter of that function is not changed, the cached version of the function is returned.
+
+```js
+function addTo256(num){
+  return num + 256;
+}
+
+addTo256(20); // Returns 276
+addTo256(40); // Returns 296
+addTo256(20); // Returns 276
+```
+
+Computing the result with the same parameter again and again is not a big deal in small program, but imagine if the function does some heavy duty work, then, computing the result again and again with the same parameter will lead to wastage of time.
+
+This is where memoization comes in, by using memoization we can store(cache) the computed results based on the parameters. If the same parameter is used again while invoking the function, instead of computing the result, we directly return the stored (cached) value.
+
+```js
+function memoizedAddTo256(){
+  var cache = {};
+
+  return function(num){
+    if(num in cache){
+      console.log("cached value");
+      return cache[num]
+
+    }
+    else{
+      cache[num] = num + 256;
+      return cache[num];
+    }
+  }
+}
+
+var memoizedFunc = memoizedAddTo256();
+
+memoizedFunc(20); // Normal return
+memoizedFunc(20); // Cached return
+```
+
+In the code above, if we run memoizedFunc function with the same parameter, instead of computing the result again, it returns the cached result.
+
+*Note- Although using memoization saves time, it results in larger consumption of memory since we are storing all the computed results.
+
 [[↑] Back to top](#table-of-contents)
 
 ### What is recursion in a programming language?
+
+Recursion is a technique to iterate over an operation by having a function call itself repeatedly until it arrives at a result. A recursive function must have a condition to stop calling itself. Otherwise, the function is called indefinitely.
+
+```js
+function add(number) {
+  if (number <= 0) {
+    return 0;
+  } else {
+    return number + add(number - 1);
+  }
+}
+
+add(3) => 3 + add(2)
+          3 + 2 + add(1)
+          3 + 2 + 1 + add(0)
+          3 + 2 + 1 + 0 = 6  
+```
+
+The following function calculates the sum of all the elements in an array by using recursion:
+
+```js
+function computeSum(arr){
+  if(arr.length === 1){
+    return arr[0];
+  }
+  else{
+    return arr.pop() + computeSum(arr);
+  }
+}
+
+computeSum([7, 8, 9, 99]); // Returns 123
+```
+
 [[↑] Back to top](#table-of-contents)
 
 ### What is the use of a constructor function in javascript?
+
+Constructor functions are used to create objects in javascript.
+
+When do we use constructor functions? If we want to create multiple objects having similar properties and methods, constructor functions are used.
+
+```js
+function Person(name,age,gender){
+  this.name = name;
+  this.age = age;
+  this.gender = gender;
+}
+
+
+var person1 = new Person("Vivek", 76, "male");
+console.log(person1);
+
+var person2 = new Person("Courtney", 34, "female");
+console.log(person2);
+```
+
+Whenever we want to create a new object of the type Person, We need to create it using the new keyword:
+```js
+var person3 = new Person("Lilly", 17, "female");
+```
+
+The above line of code will create a new object of the type Person. Constructor functions allow us to group similar objects.
+
 [[↑] Back to top](#table-of-contents)
 
 ### What is DOM?
+
+DOM stands for Document Object Model.
+
+DOM is a programming interface for HTML and XML documents.
+
+When the browser tries to render a HTML document, it creates an object based on the HTML document called DOM. 
+
+Using this DOM, we can manipulate or change various elements inside the HTML document.
+
 [[↑] Back to top](#table-of-contents)
 
 ### What are arrow functions?
+
+Arrow functions can only be used as a function expression. It provides us with a new and shorter syntax for declaring functions.
+
+Arrow functions are declared without the function keyword. If there is only one returning expression then we don’t need to use the return keyword, for functions having just one line of code, curly braces { } can be omitted. If the function takes in only one argument, then the parenthesis () around the parameter can be omitted.
+
+```js
+// Traditional Function Expression
+var add = function(a,b){
+  return a + b;
+}
+
+// Arrow Function Expression
+var arrowAdd = (a,b) => a + b;
+
+// Traditional function expression
+var multiplyBy2 = function(num){
+  return num * 2;
+}
+// Arrow function expression
+var arrowMultiplyBy2 = num => num * 2;
+```
+
+##### this
+The biggest difference between the traditional function expression and the arrow function, is the handling of the this keyword.
+
+By general definition, the this keyword always refers to the object that is calling the function.
+
+As you can see in the code below, obj1.valueOfThis() returns obj1, since this keyword refers to the object calling the function.
+
+In the arrow functions, there is no binding of the this keyword.
+
+The this keyword inside an arrow function, does not refer to the object calling it. 
+
+Arrow function rather inherits its value from the __parent scope__ which is the window object in this case.
+
+Therefore, in the code above, obj2.valueOfThis() returns the window object.
+
+```js
+var obj1 = {
+  valueOfThis: function(){
+    return this;
+  }
+}
+var obj2 = {
+  valueOfThis: ()=>{
+    return this;
+  }
+}
+
+obj1.valueOfThis(); // Will return the object obj1
+obj2.valueOfThis(); // Will return window/global object
+```
+
 [[↑] Back to top](#table-of-contents)
 
 ### Differences between declaring variables using var, let and const.
+
+keyword | const | let | var
+--- | ---- | ---- | ----
+global scope | no | no | yes
+function scope | yes | yes | yes
+block scope | yes | yes | no
+can be reassigned | no | yes | yes
+
 [[↑] Back to top](#table-of-contents)
 
 ### What is the rest parameter and spread operator?
+
+__Rest parameter ( … )__
+
+It provides an improved way of handling parameters of a function.
+
+Using the rest parameter syntax, we can create functions that can take a variable number of arguments.
+
+Any number of arguments will be converted into an array using the rest parameter.
+
+It also helps in extracting all or some parts of the arguments.
+
+Rest parameter can be used by applying three dots (...) before the parameters.
+
+*Note- Rest parameter should always be used at the last parameter of a function:
+
+```js
+function extractingArgs(...args){
+  return args[1];
+}
+
+// extractingArgs(8,9,1); // Returns 9
+
+function addAllArgs(...args){
+  let sumOfArgs = 0;
+  let i = 0;
+  while(i < args.length){
+    sumOfArgs += args[i];
+    i++;
+  }
+  return sumOfArgs;
+}
+
+addAllArgs(6, 5, 7, 99); // Returns 117
+addAllArgs(1, 3, 4); // Returns 8
+
+
+// Incorrect way to use rest parameter
+function randomFunc(a,...args,c){
+//Do something
+}
+
+// Correct way to use rest parameter
+function randomFunc2(a,b,...args){
+//Do something
+}
+```
+**Spread operator (…)**
+
+Although the syntax of spread operator is exactly the same as the rest parameter, spread operator is used to spread an array, and object literals. We also use spread operators where one or more arguments are expected in a function call.
+
+```js
+function addFourNumbers(num1,num2,num3,num4){
+  return num1 + num2 + num3 + num4;
+}
+
+let fourNumbers = [5, 6, 7, 8];
+
+
+addFourNumbers(...fourNumbers);
+// Spreads [5,6,7,8] as 5,6,7,8
+
+let array1 = [3, 4, 5, 6];
+let clonedArray1 = [...array1];
+// Spreads the array into 3,4,5,6
+console.log(clonedArray1); // Outputs [3,4,5,6]
+
+
+let obj1 = {x:'Hello', y:'Bye'};
+let clonedObj1 = {...obj1}; // Spreads and clones obj1
+console.log(obj1);
+
+let obj2 = {z:'Yes', a:'No'};
+let mergedObj = {...obj1, ...obj2}; // Spreads both the objects and merges it
+console.log(mergedObj);
+// Outputs {x:'Hello', y:'Bye',z:'Yes',a:'No'};
+```
+
+*Note- Key differences between rest parameter and spread operator:
+Rest parameter is used to take a variable number of arguments and turns into an array while the spread operator takes an array or an object and spreads it
+Rest parameter is used in function declaration whereas the spread operator is used in function calls.
+
 [[↑] Back to top](#table-of-contents)
 
 ### What is the use of promises in javascript?
+
+**Promises are used to handle asynchronous operations in javascript.**
+
+Before promises, callbacks were used to handle asynchronous operations. But due to limited functionality of callback, using multiple callbacks to handle asynchronous code can lead to unmanageable code - callback hell
+
+Promise object has four states:
+- Pending - Initial state of promise. This state represents that the promise has neither been fulfilled nor been rejected, it is in the pending state.
+- Fulfilled - This state represents that the promise has been fulfilled, meaning the async operation is completed.
+- Rejected - This state represents that the promise has been rejected for some reason, meaning the async operation has failed.
+- Settled - This state represents that the promise has been either rejected or fulfilled.
+
+A promise is created using the Promise constructor which takes in a callback function with two parameters, resolve and reject respectively.
+- resolve, goes to next action, is a function that will be called, when the async operation has been successfully completed.
+- reject, handle error, is a function that will be called, when the async operation fails or if some error occurs.
+
+Promises are used to handle asynchronous operations like server requests, for the ease of understanding, we are using an operation to calculate the sum of three elements. we are calculating the sum of three elements, if the length of elements array is more than 3, promise is rejected, else the promise is resolved and the sum is returned.
+
+```js
+function sumOfThreeElements(...elements){
+  return new Promise((resolve,reject)=>{
+    if(elements.length > 3 ){
+      reject("Only three elements or less are allowed");
+    }
+    else{
+      let sum = 0;
+      let i = 0;
+      while(i < elements.length){
+        sum += elements[i];
+        i++;
+      }
+      resolve("Sum has been calculated: "+sum);
+    }
+  })
+}
+```
+
+We can consume any promise by attaching then() and catch() methods to the consumer.
+- then() method is used to access the result when the promise is fulfilled.
+- catch() method is used to access the result/error when the promise is rejected.
+
+```js
+sumOfThreeElements(4, 5, 6)
+.then(result=> console.log(result))
+.catch(error=> console.log(error));
+// In the code above, the promise is fulfilled so the then() method gets executed
+
+sumOfThreeElements(7, 0, 33, 41)
+.then(result => console.log(result))
+.catch(error=> console.log(error));
+// In the code above, the promise is rejected hence the catch() method gets executed
+```
+
 [[↑] Back to top](#table-of-contents)
 
 ### What are classes in javascript?
+Classes are nothing but syntactic sugars for constructor functions.
+
+They provide a new way of declaring constructor functions in javascript.
+
+Below are the examples of how classes are declared and used:
+
+```js
+// Before ES6 version, using constructor functions
+function Student(name,rollNumber,grade,section){
+  this.name = name;
+  this.rollNumber = rollNumber;
+  this.grade = grade;
+  this.section = section;
+}
+
+// Way to add methods to a constructor function
+Student.prototype.getDetails = function(){
+  return 'Name: ${this.name}, Roll no: ${this.rollNumber}, Grade: ${this.grade}, Section:${this.section}';
+}
+
+let student1 = new Student("Vivek", 354, "6th", "A");
+student1.getDetails();
+// Returns Name: Vivek, Roll no:354, Grade: 6th, Section:A
+
+// ES6 version classes
+class Student{
+  constructor(name,rollNumber,grade,section){
+    this.name = name;
+    this.rollNumber = rollNumber;
+    this.grade = grade;
+    this.section = section;
+  }
+
+  // Methods can be directly added inside the class
+  getDetails(){
+    return 'Name: ${this.name}, Roll no: ${this.rollNumber}, Grade:${this.grade}, Section:${this.section}';
+  }
+}
+
+let student2 = new Student("Garry", 673, "7th", "C");
+student2.getDetails();
+// Returns Name: Garry, Roll no:673, Grade: 7th, Section:C
+``` 
+
+Key points to remember about classes:
+- Unlike functions, classes are not hoisted. A class cannot be used before it is declared.
+- A class can inherit properties and methods from other classes by using the extend keyword.
+- All the syntaxes inside the class must follow the strict mode(‘use strict’) of javascript. Error will be thrown if the strict mode rules are not followed.
+
 [[↑] Back to top](#table-of-contents)
 
 ### What are generator functions?
+
+They can be stopped midway and then continue from where it had stopped.
+
+Generator functions are declared with the `function*` keyword instead of the normal function keyword
+
+In normal functions, we use the return keyword to return a value and as soon as the return statement gets executed, the function execution stops
+
+In the case of generator functions, when called, they do not execute the code, instead they return a generator object . This generator object handles the execution.
+
+The generator object consists of a method called next() , this method when called, executes the code until the nearest yield statement, and returns the yield value.
+
+As one can see the next method returns an object consisting of value and done properties.
+Value property represents the yielded value.
+Done property tells us whether the function code is finished or not. (Returns true if finished)
+Generator functions are used to return iterators. Let’s see an example where an iterator is returned:
+
+```js
+function* iteratorFunc() {
+  let count = 0;
+  for (let i = 0; i < 2; i++) {
+      count++;
+      yield i;
+  }
+  return count;
+}
+
+let iterator = iteratorFunc();
+console.log(iterator.next()); // {value:0,done:false}
+console.log(iterator.next()); // {value:1,done:false}
+console.log(iterator.next()); // {value:2,done:true}
+```
+
 [[↑] Back to top](#table-of-contents)
 
 ### Explain WeakSet in javascript.
