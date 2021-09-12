@@ -9,6 +9,35 @@ title: JavaScript Questions
 - [List ES6 features you know](#list-ES6-features-you-know)
 - [What is the new keyword in the JS](#what-is-the-new-keyword-in-the-JS)
 - [Function prototype methods, bind vs apply vs call?](#function-prototype-methods-bind-vs-apply-vs-call)
+- [What are the different data types present in javascript?](#let-vs-const-vs-var)
+- [Explain Hoisting in javascript](#let-vs-const-vs-var)
+- [Difference between “==” and “===” operators](#let-vs-const-vs-var)
+- [Explain Implicit Type Coercion in javascript](#let-vs-const-vs-var)
+- [Is javascript a statically typed or a dynamically typed language?](#let-vs-const-vs-var)
+- [What is NaN property in JavaScript?](#let-vs-const-vs-var)
+- [Explain passed by value and passed by reference.](#let-vs-const-vs-var)
+- [What is an Immediately Invoked Function in javascript?](#let-vs-const-vs-var)
+- [Explain Higher Order Functions in javascript.](#let-vs-const-vs-var)
+- [Explain “this” keyword.](#let-vs-const-vs-var)
+- [Explain call(), apply() and, bind() methods.](#let-vs-const-vs-var)
+- [What is Currying in javascript?](#let-vs-const-vs-var)
+- [Explain Closures in JavaScript.](#let-vs-const-vs-var)
+- [What are object prototypes?](#let-vs-const-vs-var)
+- [What are callbacks?](#let-vs-const-vs-var)
+- [What is memoization?](#let-vs-const-vs-var)
+- [What is recursion in a programming language?](#let-vs-const-vs-var)
+- [What is the use of a constructor function in javascript?](#let-vs-const-vs-var)
+- [What is DOM?](#let-vs-const-vs-var)
+- [What are arrow functions?](#let-vs-const-vs-var)
+- [Differences between declaring variables using var, let and const.](#let-vs-const-vs-var)
+- [What is the rest parameter and spread operator?](#let-vs-const-vs-var)
+- [What is the use of promises in javascript?](#let-vs-const-vs-var)
+- [What are classes in javascript?](#let-vs-const-vs-var)
+- [What are generator functions?](#let-vs-const-vs-var)
+- [Explain WeakSet in javascript.](#let-vs-const-vs-var)
+- [Explain WeakMap in javascript.](#let-vs-const-vs-var)
+- [What is Object Destructuring?](#let-vs-const-vs-var)
+- [What is a Temporal Dead Zone?](#let-vs-const-vs-var)
 - [Explain event delegation](#explain-event-delegation)
 - [Explain how `this` works in JavaScript](#explain-how-this-works-in-javascript)
 - [Explain how prototypal inheritance works](#explain-how-prototypal-inheritance-works)
@@ -67,6 +96,10 @@ title: JavaScript Questions
 - [What is a promise? Where and how would you use promise?](#what-is-a-promise-where-and-how-would-you-use-promise)
 - [main thread vs micro vs macro in promise](#main-thread-vs-micro-vs-macro-in-promise)
 
+## Resources
+https://www.interviewbit.com/javascript-interview-questions/#javscript-data-types
+
+## JavaScript
 ### Please explain to me the JS mechanism (how to handle the sync and async code)?
 
 The event loops behind the browser handles the sync and async JavaScript code, like when JS engine that built in the browser (for chrome is V8) runs JS code, because JS is a single threaded language, the code will be read line by line, and stores the memory in the heap, and push the function call to the call stack. If it is async function code, it will be then pushed to the web api instead to wait for the condition to be met while the call stack keeps running as first in last out and garbage collects the variables that are no longer in use. Once the async code in the web api is ready to run, it will then be pushed to the message queue. When there are no functions to run in the call stack, the Event Loop will take the first event from the queue and will push it to the Call Stack (as first in first out) to run. 
@@ -193,6 +226,471 @@ sayHelloKelly(); // Hello Kelly King
 ```
 
 bind() - referring to “this” object with a new function that is specifically made for “this”; however, it is not executing the function yet while apply() and call() will execute the function right away. Apply is for array in the arguments while call just with commas. 
+
+[[↑] Back to top](#table-of-contents)
+
+### What are the different data types present in javascript?
+
+To know the type of a JavaScript variable, we can use the `typeof` operator.
+
+Primitive data types can store only a single value. To store multiple and complex values, non-primitive data types are used.
+
+##### Primitive types
+String - It represents a series of characters and is written with quotes. A string can be represented using a single or a double quote.
+
+Number - It represents a number and can be written with or without decimals.
+
+Boolean - It represents a logical entity and can have only two values : true or false. Booleans are generally used for conditional testing.
+
+Undefined - When a variable is declared but not assigned, it has the value of undefined and it’s type is also undefined.
+
+Null - It represents a non-existent or a invalid value.
+
+Symbol - It is a new data type introduced in the ES6 version of javascript. It is used to store an anonymous and unique value.
+
+BigInt - This data type is used to store numbers which are above the limitation of the Number data type. It can store large integers and is represented by adding “n” to an integer literal.
+
+```js
+typeof "John Doe" // Returns "string"
+typeof 3.14 // Returns "number"
+typeof true // Returns "boolean"
+typeof 234567890123456789012345678901234567890n // Returns bigint
+typeof undefined // Returns "undefined"
+typeof null // Returns "object" (kind of a bug in JavaScript)
+typeof Symbol('symbol') // Returns Symbol
+```
+
+##### Non-primitive types
+
+Object - Used to store collection of data.
+
+*Note- It is important to remember that any data type that is not primitive data type, is of Object type in javascript.
+
+```js
+// Collection of data in key-value pairs
+
+var obj1 = {
+   x:  43,
+   y:  "Hello world!",
+   z: function(){
+      return this.x;
+   }
+}
+      
+// Collection of data as an ordered list
+      
+var array1 = [5, "Hello", true, 4.1];   
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### Explain Hoisting in javascript.
+
+Hoisting is a default behaviour of javascript where all the variable and function declarations are moved on top.
+
+This means that irrespective of where the variables and functions are declared, they are moved on top of the scope. The scope can be both local and global.
+
+```js
+//var
+hoistedVariable = 3;
+console.log(hoistedVariable); // outputs 3 even when the variable is declared after it is initialized	
+var hoistedVariable;
+
+//regular function
+hoistedFunction();  // Outputs " Hello world! " even when the function is declared after calling
+
+function hoistedFunction(){ 
+  console.log(" Hello world! ");
+}
+
+// Hoisting takes place in the local scope as well
+function doSomething(){
+  x = 33;
+  console.log(x);
+  var x;
+}
+```
+
+*Note - Variable initializations are not hoisted, only variable declarations are hoisted:
+```js
+var x;
+console.log(x); // Outputs "undefined" since the initialization of "x" is not hoisted
+x = 23;
+```
+
+*Note - To avoid hoisting, you can run javascript in strict mode by using “use strict” on top of the code:
+```js
+"use strict";
+x = 23; // Gives an error since 'x' is not declared
+var x; 
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### Difference between “==” and “===” operators.
+
+Both are comparison operators. The difference between both the operators is that,“==” is used to compare values whereas, “ === “ is used to compare both value and types.
+```js
+var x = 2;
+var y = "2";
+(x == y)  // Returns true since the value of both x and y is the same
+(x === y) // Returns false since the typeof x is "number" and typeof y is "string"
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### Explain Implicit Type Coercion in javascript.
+
+Implicit type coercion in javascript is automatic conversion of value from one data type to another. It takes place when the operands of an expression are of different data types.
+
+##### String Coercion
+String coercion takes place while using the ‘ + ‘ operator. When a number is added to a string, the number type is always converted to the string type.
+
+```js
+var x = 3;
+var y = "3";
+x + y // Returns "33" 
+
+var x = 24;
+var y = "Hello";
+x + y   // Returns "24Hello";
+
+var name = "Vivek";
+var surname = " Bisht";
+name + surname     // Returns "Vivek Bisht"
+```
+
+*Note - Type coercion also takes place when using the ‘ - ‘ operator, but the difference while using ‘ - ‘ operator is that, a string is converted to a number and then subtraction takes place.
+
+```js
+var x = 3;
+Var y = "3";
+x - y    //Returns 0 since the variable y (string type) is converted to a number type
+```
+
+##### Boolean Coercion
+Boolean coercion takes place when using logical operators, ternary operators, if statements and loop checks. To understand boolean coercion in if statements and operators, we need to understand truthy and falsy values.
+
+Truthy values are those which will be converted (coerced) to true . Falsy values are those which will be converted to false .
+
+All values except 0, 0n, -0, “”, null, undefined and NaN are truthy values.
+
+```js
+var x = 0;
+var y = 23;
+        
+if(x) { console.log(x) }   // The code inside this block will not run since the value of x is 0(Falsy)  
+        
+if(y) { console.log(y) }    // The code inside this block will run since the value of y is 23 (Truthy)
+```
+
+##### Logical operators:
+Logical operators in javascript, unlike operators in other programming languages, do not return true or false. They always return one of the operands.
+
+OR ( || ) operator - If the first value is truthy, then the first value is returned. Otherwise, always the second value gets returned.
+
+AND ( && ) operator - If both the values are truthy, always the second value is returned. If the first value is falsy then the first value is returned or if the second value is falsy then the second value is returned.
+
+```js
+var x = 220;
+var y = "Hello";
+var z = undefined;
+        
+x || y    // Returns 220 since the first value is truthy      
+x || z   // Returns 220 since the first value is truthy
+        
+x && y    // Returns "Hello" since both the values are truthy
+y && z   // Returns undefined since the second value is falsy
+        
+if( x && y ){ 
+  console.log("Code runs" ); // This block runs because x && y returns "Hello" (Truthy)
+}   
+        
+if( x || z ){
+  console.log("Code runs");  // This block runs because x || y returns 220(Truthy)
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### Is javascript a statically typed or a dynamically typed language?
+
+__JavaScript is a dynamically typed language.__
+
+In a dynamically typed language, the type of a variable is checked during run-time in contrast to statically typed language, where the type of a variable is checked during compile-time.
+
+Since javascript is a loosely(dynamically) typed language, variables in JS are not associated with any type. A variable can hold the value of any data type.
+For example, a variable which is assigned a number type can be converted to a string type:
+
+```js
+var a = 23;
+var a = "Hello World!";
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### What is NaN property in JavaScript?
+
+NaN property represents “Not-a-Number” value. It indicates a value which is not a legal number.
+
+typeof of a NaN will return a Number .
+
+To check if a value is NaN, we use the isNaN() function,
+
+```js
+isNaN("Hello")  // Returns true
+isNaN(345)   // Returns false
+isNaN('1')  // Returns false, since '1' is converted to Number type which results in 0 ( a number) 
+isNaN(true) // Returns false, since true converted to Number type results in 1 ( a number)
+isNaN(false) // Returns false
+isNaN(undefined) // Returns true
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### Explain passed by value and passed by reference.
+
+__In JavaScript, primitive data types are passed by value and non-primitive data types are passed by reference__
+
+##### passed by value
+Assign operator dealing with primitive types:
+```js
+var y = 234;
+var z = y;
+
+var y = #8454; // y pointing to address of the value 234
+var z = y; 
+var z = #5411; // z pointing to a completely new address of the value 234
+        
+// Changing the value of y
+y = 23;
+console.log(z);  // Returns 234, since z points to a new address in the memory so changes in y will not effect z
+```
+
+Instead of just assigning the same address to another variable, the value is passed and new space of memory is created.
+
+##### passed by reference
+Assign operator dealing with non-primitive types:
+```js
+var obj = { name: "Vivek", surname: "Bisht" };
+var obj2 = obj;
+
+var obj = #8711;  // obj pointing to address of { name: "Vivek", surname: "Bisht" }
+var obj2 = obj;   
+var obj2 = #8711; // obj2 pointing to the same address 
+        
+// changing the value of obj1
+obj1.name = "Akki";
+console.log(obj2);
+// Returns {name:"Akki", surname:"Bisht"} since both the variables are pointing to the same address.
+```
+While passing non-primitive data types, the assign operator directly passes the address (reference).
+Therefore, non-primitive data types are always passed by reference.
+
+[[↑] Back to top](#table-of-contents)
+
+### What is an Immediately Invoked Function in javascript?
+
+An Immediately Invoked Function ( known as IIFE and pronounced as IIFY) is a function that runs as soon as it is defined.
+
+Syntax of IIFE :
+```js
+(function(){ 
+  // Do something;
+})();
+```
+
+While executing javascript code, whenever the compiler sees the word “function”, it assumes that we are declaring a function in the code. Therefore, if we do not use the first set of parentheses, the compiler throws an error because it thinks we are declaring a function, and by the syntax of declaring a function, a function should always have a name.
+
+To remove this error, we add the first set of parenthesis that tells the compiler that the function is not a function declaration, instead, it’s a function expression.
+
+Therefore to invoke the function, we use the second set of parenthesis. 
+
+[[↑] Back to top](#table-of-contents)
+
+### Explain Higher Order Functions in javascript.
+
+Functions that operate on other functions, either by taking them as arguments or by returning them, are called higher-order functions.
+
+Higher order functions are a result of functions being first-class citizens in javascript.
+
+```js
+function higherOrder(fn) {
+  fn();
+}
+     
+higherOrder(function() { console.log("Hello world") }); 
+
+function higherOrder2() {
+  return function() {
+    return "Do something";
+  }
+}
+        
+var x = higherOrder2();
+x()   // Returns "Do something"
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### Explain “this” keyword.
+
+[[↑] Back to top](#table-of-contents)
+
+### Explain call(), apply() and, bind() methods.
+
+[[↑] Back to top](#table-of-contents)
+
+### What is Currying in javascript?
+
+[[↑] Back to top](#table-of-contents)
+
+### Explain Scope and Scope Chain in javascript.
+[[↑] Back to top](#table-of-contents)
+
+### Explain Closures in JavaScript.
+[[↑] Back to top](#table-of-contents)
+
+### What are object prototypes?
+[[↑] Back to top](#table-of-contents)
+
+### What are callbacks?
+[[↑] Back to top](#table-of-contents)
+
+### What is memoization?
+[[↑] Back to top](#table-of-contents)
+
+### What is recursion in a programming language?
+[[↑] Back to top](#table-of-contents)
+
+### What is the use of a constructor function in javascript?
+[[↑] Back to top](#table-of-contents)
+
+### What is DOM?
+[[↑] Back to top](#table-of-contents)
+
+### What are arrow functions?
+[[↑] Back to top](#table-of-contents)
+
+### Differences between declaring variables using var, let and const.
+[[↑] Back to top](#table-of-contents)
+
+### What is the rest parameter and spread operator?
+[[↑] Back to top](#table-of-contents)
+
+### What is the use of promises in javascript?
+[[↑] Back to top](#table-of-contents)
+
+### What are classes in javascript?
+[[↑] Back to top](#table-of-contents)
+
+### What are generator functions?
+[[↑] Back to top](#table-of-contents)
+
+### Explain WeakSet in javascript.
+In javascript, Set is a collection of unique and ordered elements.
+
+Just like Set, WeakSet is also a collection of unique and ordered elements with some key differences:
+
+- Weakset contains only objects and no other type.
+- An object inside the weakset is referenced weakly. This means, if the object inside the weakset does not have a reference, it will be garbage collected.
+- Unlike Set, WeakSet only has three methods, add() , delete() and has() .
+
+```js
+const newSet = new Set([4, 5, 6, 7]);
+console.log(newSet);// Outputs Set {4,5,6,7}
+
+const newSet2 = new WeakSet([3, 4, 5]); //Throws an error
+
+let obj1 = {message:"Hello world"};
+const newSet3 = new WeakSet([obj1]);
+console.log(newSet3.has(obj1)); // true
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### Explain WeakMap in javascript.
+In javascript, Map is used to store key-value pairs. The key-value pairs can be of both primitive and non-primitive types.
+
+WeakMap is similar to Map with key differences:
+
+- The keys and values in weakmap should always be an object.
+- If there are no references to the object, the object will be garbage collected.
+
+```js
+const map1 = new Map();
+map1.set('Value', 1);
+
+const map2 = new WeakMap();
+map2.set('Value', 2.3); // Throws an error
+
+let obj = {name:"Vivek"};
+const map3 = new WeakMap();
+map3.set(obj, {age:23});
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### What is Object Destructuring?
+Object destructuring is a new way to extract elements from an object or an array.
+
+##### Object destructuring
+```js
+const classDetails = {
+  strength: 78,
+  benches: 39,
+  blackBoard:1
+}
+
+const {strength:classStrength, benches:classBenches,blackBoard:classBlackBoard} = classDetails;     //re-naming
+
+console.log(classStrength); // Outputs 78
+console.log(classBenches); // Outputs 39
+console.log(classBlackBoard); // Outputs 1
+
+//same code above using destructuring
+const {strength:strength} = classDetails;
+// The above line of code can be written as:
+const {strength} = classDetails;
+```
+##### Array destructuring
+```js
+const arr = [1, 2, 3, 4];
+const first = arr[0];
+const second = arr[1];
+const third = arr[2];
+const fourth = arr[3];
+
+//same code above using destructuring
+const arr = [1, 2, 3, 4];
+const [first,second,third,fourth] = arr;
+
+console.log(first); // Outputs 1
+console.log(second); // Outputs 2
+console.log(third); // Outputs 3
+console.log(fourth); // Outputs 4
+```
+
+[[↑] Back to top](#table-of-contents)
+
+### What is a Temporal Dead Zone?
+
+Temporal Dead Zone is a behaviour that occurs with variables declared using let and const keywords.
+
+It is a behaviour where we try to access a variable before it is initialized.
+
+Examples of temporal dead zone:
+```js
+x = 23; // Gives reference error
+let x;
+
+function anotherRandomFunc(){
+  message = "Hello"; // Throws a reference error
+  let message;
+}
+anotherRandomFunc();
+```
+
+In the code above, both in global scope and functional scope, we are trying to access variables which have not been declared yet. This is called the Temporal Dead Zone .
 
 [[↑] Back to top](#table-of-contents)
 
