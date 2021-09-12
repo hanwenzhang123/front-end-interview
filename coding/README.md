@@ -141,7 +141,7 @@ function func1(){
 func1();    //2, 12
 
 // Code 2:
-function func2(){
+function func2(){     //With var you have a function scope, and only one shared binding for all of your loop iterations 
   for(var i = 0; i < 3; i++){   //the variable i is incremented first and then checked 
     setTimeout(()=> console.log(i),2000); //var keyword does not have block scope, only function scope
   }
@@ -150,7 +150,7 @@ function func2(){
 func2();    //3 3 3
 
 // Code 2:
-function func2(){
+function func2(){   //With let you have a block scope, and when used in the for loop you get a new binding for each iteration
   for(let i = 0; i < 3; i++){   //let/const keyword has block scope
     setTimeout(()=> console.log(i),2000);
   }
