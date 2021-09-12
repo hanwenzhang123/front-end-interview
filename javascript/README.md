@@ -9,35 +9,35 @@ title: JavaScript Questions
 - [List ES6 features you know](#list-ES6-features-you-know)
 - [What is the new keyword in the JS](#what-is-the-new-keyword-in-the-JS)
 - [Function prototype methods, bind vs apply vs call?](#function-prototype-methods-bind-vs-apply-vs-call)
-- [What are the different data types present in javascript?](#let-vs-const-vs-var)
-- [Explain Hoisting in javascript](#let-vs-const-vs-var)
-- [Difference between “==” and “===” operators](#let-vs-const-vs-var)
-- [Explain Implicit Type Coercion in javascript](#let-vs-const-vs-var)
-- [Is javascript a statically typed or a dynamically typed language?](#let-vs-const-vs-var)
-- [What is NaN property in JavaScript?](#let-vs-const-vs-var)
-- [Explain passed by value and passed by reference.](#let-vs-const-vs-var)
-- [What is an Immediately Invoked Function in javascript?](#let-vs-const-vs-var)
-- [Explain Higher Order Functions in javascript.](#let-vs-const-vs-var)
-- [Explain “this” keyword.](#let-vs-const-vs-var)
-- [Explain call(), apply() and, bind() methods.](#let-vs-const-vs-var)
-- [What is Currying in javascript?](#let-vs-const-vs-var)
-- [Explain Closures in JavaScript.](#let-vs-const-vs-var)
-- [What are object prototypes?](#let-vs-const-vs-var)
-- [What are callbacks?](#let-vs-const-vs-var)
-- [What is memoization?](#let-vs-const-vs-var)
-- [What is recursion in a programming language?](#let-vs-const-vs-var)
-- [What is the use of a constructor function in javascript?](#let-vs-const-vs-var)
-- [What is DOM?](#let-vs-const-vs-var)
-- [What are arrow functions?](#let-vs-const-vs-var)
-- [Differences between declaring variables using var, let and const.](#let-vs-const-vs-var)
-- [What is the rest parameter and spread operator?](#let-vs-const-vs-var)
-- [What is the use of promises in javascript?](#let-vs-const-vs-var)
-- [What are classes in javascript?](#let-vs-const-vs-var)
-- [What are generator functions?](#let-vs-const-vs-var)
-- [Explain WeakSet in javascript.](#let-vs-const-vs-var)
-- [Explain WeakMap in javascript.](#let-vs-const-vs-var)
-- [What is Object Destructuring?](#let-vs-const-vs-var)
-- [What is a Temporal Dead Zone?](#let-vs-const-vs-var)
+- [What are the different data types present in javascript?](#what-are-the-different-data-types-present-in-javascript)
+- [Explain Hoisting in javascript](#explain-hoisting-in-javascript)
+- [Difference between “==” and “===” operators](#difference-between-==-and-===-operators)
+- [Explain Implicit Type Coercion in javascript](#explain-implicit-type-coercion-in-javascript)
+- [Is javascript a statically typed or a dynamically typed language?](#is-javascript-a-statically-typed-or-a-dynamically-typed-language)
+- [What is NaN property in JavaScript?](#What-is-NaN-property-in-JavaScript)
+- [Explain passed by value and passed by reference](#explain-passed-by-value-and-passed-by-reference)
+- [What is an Immediately Invoked Function in javascript?](#what-is-an-Immediately-Invoked-Function-in-javascript)
+- [Explain Higher Order Functions in javascript.](#Explain-Higher-Order-Functions-in-javascript)
+- [Explain “this” keyword.](#Explain-this-keyword)
+- [Explain call(), apply() and, bind() methods.](#Explain-call-apply-and-bind-methods)
+- [What is Currying in javascript?](#what-is-Currying-in-javascript)
+- [Explain Closures in JavaScript.](#Explain-Closures-in-JavaScript)
+- [What are object prototypes?](#What-are-object-prototypes)
+- [What are callbacks?](#what-are-callbacks)
+- [What is memoization?](#what-is-memoization)
+- [What is recursion in a programming language?](#what-is-recursion-in-a-programming-language)
+- [What is the use of a constructor function in javascript?](#What-is-the-use-of-a-constructor-function-in-javascript)
+- [What is DOM?](#what-is-DOM)
+- [What are arrow functions?](#What-are-arrow-functions)
+- [Differences between declaring variables using var, let and const.](#Differences-between-declaring-variables-using-var-let-and-const)
+- [What is the rest parameter and spread operator?](#What-is-the-rest-parameter-and-spread-operator)
+- [What is the use of promises in javascript?](#what-is-the-use-of-promises-in-javascript)
+- [What are classes in javascript?](#what-are-classes-in-javascript)
+- [What are generator functions?](#What-are-generator-functions)
+- [Explain WeakSet in javascript.](#explain-WeakSet-in-javascript)
+- [Explain WeakMap in javascript.](#Explain-WeakMap-in-javascript)
+- [What is Object Destructuring?](#what-is-Object-Destructuring)
+- [What is a Temporal Dead Zone?](#What-is-a-Temporal-Dead-Zone)
 - [Explain event delegation](#explain-event-delegation)
 - [Explain how `this` works in JavaScript](#explain-how-this-works-in-javascript)
 - [Explain how prototypal inheritance works](#explain-how-prototypal-inheritance-works)
@@ -408,6 +408,30 @@ if( x && y ){
         
 if( x || z ){
   console.log("Code runs");  // This block runs because x || y returns 220(Truthy)
+```
+
+###### Nullish coalescing operator '??'
+As it treats null and undefined similarly, we’ll use a special term here, in this article. We’ll say that an expression is “defined” when it’s neither null nor undefined.
+
+The result of a ?? b is:
+- if a is defined, then a,
+- if a isn’t defined, then b.
+- In other words, ?? returns the first argument if it’s not null/undefined. Otherwise, the second one.
+- ?? returns the first defined value. Otherwise, the second one.
+
+```js
+let user;
+alert(user ?? "Anonymous"); // Anonymous (user not defined)
+
+let user = "John";
+alert(user ?? "Anonymous"); // John (user defined)
+
+let firstName = null;
+let lastName = null;
+let nickName = "Supercoder";
+
+// shows the first defined value:
+alert(firstName ?? lastName ?? nickName ?? "Anonymous"); // Supercoder
 ```
 
 [[↑] Back to top](#table-of-contents)
